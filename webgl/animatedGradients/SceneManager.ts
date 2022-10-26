@@ -4,27 +4,33 @@ import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import fragmentShader from "./fragmentShader.glsl";
 // @ts-ignore
 import vertexShader from "./vertexShader.glsl";
-import {Mesh} from "three";
+import {Mesh, Color} from "three";
 
 export default class SceneManager extends THREE.Scene{
     private readonly gltfLoader = new GLTFLoader();
     private plane = {} as Mesh;
+    palette: Color[]
+    constructor({ palette } : { palette: Color[] }) {
+        super();
+        this.palette = palette;
+    }
     initialize() {
-        // const light = new THREE.AmbientLight( 0x404040 ); // soft white light
-        // this.add( light );
-        const geometry = new THREE.PlaneGeometry( 1, 1, 100, 100 )
+
+        const geometry = new THREE.PlaneGeometry( 10, 8, 300, 300 )
         // const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         const material = new THREE.ShaderMaterial( {
             uniforms: {
                 time: { value: 1.0 },
-                resolution: { value: new THREE.Vector2() }
+                resolution: { value: new THREE.Vector2() },
+                uColor: { value: this.palette },
             },
             vertexShader: vertexShader,
             fragmentShader: fragmentShader,
-            wireframe: true
+            // wireframe: true
         } );
         this.plane = new THREE.Mesh( geometry, material );
         this.add(this.plane);
+        console.log('palette', this.palette);
     }
 
     update() {

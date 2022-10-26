@@ -4,6 +4,7 @@ varying vec2 vUv;
 varying vec3 vPosition;
 uniform vec2 pixels;
 varying vec3 vColor;
+uniform vec3 uColor[5];
 
 float PI = 3.14159265359;
 
@@ -80,12 +81,22 @@ float snoise(vec3 v){
 }
 
 void main() {
-  vColor = vec3(0.5);
+  vColor = uColor[0];
+  vec2 noiseCoors = uv*(vec2(8., 4.5));
+  float noise = snoise(vec3(noiseCoors.x, noiseCoors.y * sin(time * 0.13), cos(time * 0.1)));
+  noise = max(0.0, noise);
 
-  float noise = snoise(vec3(uv, time * 0.1));
+  // pochyla do przodu jak w grach komputerowych
+  float tilt = -4.4 * uv.y;
 
-  vec3 pos = vec3(position.x, position.y, position.z + noise * 0.15);
+  // skew a bit
+  float incline = uv.x * 2.5;
 
+  // thats skew plane a bit
+  float offset = incline * mix(-.5, 0.5, uv.y);
+
+//  vec3 pos = vec3(position.x, position.y, position.z + noise * 0.5 + tilt + incline + offset);
+  vec3 pos = vec3(position.x, position.y, position.z + noise * 0.5 + tilt + incline + offset);
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );
 }
