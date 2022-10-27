@@ -1,6 +1,6 @@
 import {
     Color,
-    PerspectiveCamera, Vector3,
+    PerspectiveCamera,
     WebGLRenderer,
 } from "three";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
@@ -18,12 +18,10 @@ type SetupPayload = {
     canvas: HTMLCanvasElement
 }
 
-console.log('shaders', vertexShader, fragmentShader);
+// let index = Math.floor(Math.random() * niceColors.length | 0); // just to get a random color palette
+const index = 24;
 
-let palette = niceColors[Math.floor(Math.random() * niceColors.length | 0)].map((color) => new Color(color));
-
-
-console.log('pallete', palette);
+let palette = niceColors[index].map((color) => new Color(color));
 
 export function setup({
        canvas,
@@ -34,8 +32,8 @@ export function setup({
 
     const mainCamera: PerspectiveCamera =
         new PerspectiveCamera( 45, getDocumentWidth() / getDocumentHeight(), 0.1, 1000 );
-    mainCamera.position.z = 3;
-    mainCamera.position.set(-1.4210002836431703, -1.3310937992202898, 3.365735168442218)
+    mainCamera.position.set(0, 0,1.3);
+    // mainCamera.position.set(-1.4210002836431703, -1.3310937992202898, 3.365735168442218)
     const renderer: WebGLRenderer =
         new WebGLRenderer({ antialias: true, canvas });
     const controls = new OrbitControls( mainCamera, renderer.domElement );

@@ -81,10 +81,61 @@ float snoise(vec3 v){
 }
 
 void main() {
-  vColor = uColor[0];
-  vec2 noiseCoors = uv*(vec2(8., 4.5));
-  float noise = snoise(vec3(noiseCoors.x, noiseCoors.y * sin(time * 0.13), cos(time * 0.1)));
+  vColor = uColor[4];
+  vec2 noiseCoords = uv*(vec2(5., 3));
+
+  float noise = snoise(
+    vec3(
+      noiseCoords.x,
+      noiseCoords.y * time * 1.3,
+      time
+    )
+  );
   noise = max(0.0, noise);
+
+
+  // first approach without smoothstep
+//  for(int i = 0; i<4; i ++) {
+//    float noiseFlow = 5. + float(i) * 0.3;
+//    float noiseSpeed = 1. + float(i) * 0.3;
+//    float noiseSeed = 1. + float(i) * 10.;
+//    vec2 noiseFreq= vec2(-.1, .3);
+//
+//    float noise = snoise(
+//      vec3(
+//        noiseCoords.x * noiseFreq.x + time * noiseFlow,
+//        noiseCoords.y * noiseFreq.y,
+//        time * noiseSpeed + noiseSeed
+//      )
+//    );
+//    vColor = mix(vColor, uColor[i], noise);
+//  }
+
+  for(int i = 0; i<4; i ++) {
+    float iToFloated = float(i);
+    float noiseFlow = 5. + iToFloated * 0.3;
+    float noiseSpeed = 1. + iToFloated * 0.3;
+    float noiseSeed = 1. + iToFloated * 10.;
+    float noiseFloor = 0.1;
+    float noiseCeil = 0.6;
+
+    vec2 noiseFreq= vec2(-.2, .3);
+
+    float noise = smoothstep(
+      noiseFloor,
+      noiseCeil,
+      snoise(
+        vec3(
+          noiseCoords.x * noiseFreq.x + time * noiseFlow,
+          noiseCoords.y * noiseFreq.y,
+          time * noiseSpeed + noiseSeed
+        )
+      )
+    );
+    vColor = mix(vColor, uColor[i], noise);
+  }
+
+
 
   // pochyla do przodu jak w grach komputerowych
   float tilt = -4.4 * uv.y;
@@ -96,7 +147,12 @@ void main() {
   float offset = incline * mix(-.5, 0.5, uv.y);
 
 //  vec3 pos = vec3(position.x, position.y, position.z + noise * 0.5 + tilt + incline + offset);
-  vec3 pos = vec3(position.x, position.y, position.z + noise * 0.5 + tilt + incline + offset);
+  vec3 pos = vec3(
+    position.x,
+    position.y,
+    position.z + noise * 0.6 + tilt + incline + offset
+  );
+
   vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );
 }
