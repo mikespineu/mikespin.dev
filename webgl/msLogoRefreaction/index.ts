@@ -18,18 +18,18 @@ type SetupPayload = {
     canvas: HTMLCanvasElement
 }
 
-let index = Math.floor(Math.random() * niceColors.length | 0); // just to get a random color palette
-// const index = 24; // 17
+// let index = Math.floor(Math.random() * niceColors.length | 0); // just to get a random color palette
+const index = 24; // 17
 console.log('index', index);
 
 const palette = niceColors[index].map((color) => new Color(color));
 
-export function setup({
+export async function setup({
        canvas,
    } : SetupPayload) {
 
     const scene = new SceneManager({ palette })
-    scene.initialize();
+    await scene.initialize();
 
     const mainCamera: PerspectiveCamera =
         new PerspectiveCamera( 45, getDocumentWidth() / getDocumentHeight(), 0.1, 1000 );

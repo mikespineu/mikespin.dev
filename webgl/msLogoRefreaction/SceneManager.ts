@@ -1,13 +1,16 @@
 import {
     Color,
     DirectionalLight,
+    EquirectangularReflectionMapping,
     IcosahedronGeometry,
-    Mesh,
+    Mesh, MeshBasicMaterial,
     MeshNormalMaterial,
     MeshPhysicalMaterial,
     PlaneGeometry,
+    RepeatWrapping,
     Scene,
     ShaderMaterial,
+    TextureLoader,
     Vector2
 } from "three";
 
@@ -16,9 +19,12 @@ import fragmentShader from "./fragmentShader.glsl";
 // @ts-ignore
 import vertexShader from "./vertexShader.glsl";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader.js";
 
 export default class SceneManager extends Scene{
     private readonly gltfLoader = new GLTFLoader();
+    private readonly RGBELoader = new RGBELoader();
+    private readonly TextureLoader = new TextureLoader();
     private plane = {} as Mesh;
     private logo = {} as Mesh;
     palette: Color[]
@@ -31,6 +37,8 @@ export default class SceneManager extends Scene{
         this.createBackground()
         await this.createLogo();
         this.createLight();
+        // @ts-ignore
+        window.scene = this;
     }
 
     createBackground() {
@@ -48,51 +56,56 @@ export default class SceneManager extends Scene{
         this.add(this.plane);
     }
 
-    async createLogo() {
-        this.loadModel();;
-        // this.add(logo);
-        const geometry = new IcosahedronGeometry(0.3, 0);
-        // const material = new MeshNormalMaterial();
-        const material = new MeshPhysicalMaterial({
-            // metalness: 0,
-            roughness: 0.7,
-            transmission: 1,
-            // @ts-ignore
-            thickness: 1
-        });
-        const mesh = new Mesh(geometry, material)
-        this.add(mesh);
-    }
-
     createLight() {
         const light = new DirectionalLight(new Color(0xfff0dd), 1);
         light.position.set(0, 5, 10);
         this.add(light);
     }
 
-    loadModel() {
-         this.gltfLoader.load(
+    async createLogo() {
+        const hdrEquirect = await this.RGBELoader.load(
+            "empty_warehouse_01_1k.hdr",
+            () => {
+                hdrEquirect.mapping = EquirectangularReflectionMapping;
+            }
+        );
+
+        const normalMapTexture = this.TextureLoader.load("normals.jpg");
+        normalMapTexture.wrapS = RepeatWrapping;
+        normalMapTexture.wrapT = RepeatWrapping;
+
+
+        await this.gltfLoader.load(
             '/ms3-modifer.glb',
             (gltf) => {
                 const logo = gltf.scene.children.find((mesh) => mesh.name === 'Curve') as Mesh;
-                this.add(logo);
                 const geometry = logo.geometry.clone()
-
-
-                // geometry.rotateX(Math.PI / 2);
-
                 const material = new MeshPhysicalMaterial({
                     // metalness: 0,
-                    roughness: 0.7,
-                    transmission: 1,
+                    roughness: 0.23,
+                    transmission: 0.9,
                     // @ts-ignore
-                    thickness: 1
+                    thickness: 1.5,
+                    envMap: hdrEquirect,
+                    envMapIntensity: 0.9,
+                    clearcoatNormalMap: normalMapTexture,
+                    clearcoatRoughness: 19,
                 });
 
                 const mesh = new Mesh(geometry, material);
+                const scale = 12;
+                mesh.position.set(0, 0, 0.2);
+                mesh.scale.set(scale, scale, scale);
+                mesh.rotation.set( Math.PI / 2, 0, 0);
                 mesh.name = 'logo';
-                console.log('mesh', mesh, this);
+
+
+                const geometry2 = new IcosahedronGeometry(1, 0);
+                const mesh2 = new Mesh(geometry2, material)
+
+
                 this.add(mesh);
+                // this.add(mesh2);
             },
         ); }
 
