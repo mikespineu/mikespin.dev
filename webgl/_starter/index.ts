@@ -8,8 +8,10 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {getDocumentHeight, getDocumentWidth} from "@/utils/utils.client";
 
 import SceneManager from "./SceneManager";
-import { fragmentShader } from "./fragmentShader";
-import { vertexShader } from "./vertexShader";
+// @ts-ignore
+import fragmentShader from "./fragmentShader.glsl";
+// @ts-ignore
+import vertexShader from "./vertexShader.glsl";
 
 type SetupPayload = {
     canvas: HTMLCanvasElement
