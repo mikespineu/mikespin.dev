@@ -1,7 +1,9 @@
 import * as THREE from "three";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import { fragmentShader } from "./fragmentShader";
-import { vertexShader } from "./vertexShader";
+// @ts-ignore
+import fragmentShader from "./fragmentShader.glsl";
+// @ts-ignore
+import vertexShader from "./vertexShader.glsl";
 
 export default class SceneManager extends THREE.Scene{
     private readonly gltfLoader = new GLTFLoader();
