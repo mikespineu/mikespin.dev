@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Head from "next/head";
-import { AnimatedGradients } from '@/components/animated-gradients';
+import { AnimatedGradients } from '@/components/AnimatedGradients';
 
-const ascii: NextPage = () => {
+const AnimatedGradientsPage: NextPage = () => {
     return (
         <>
             <Head>
@@ -17,4 +17,4 @@ const ascii: NextPage = () => {
     )
 }
 
-export default ascii
+export default AnimatedGradientsPage
