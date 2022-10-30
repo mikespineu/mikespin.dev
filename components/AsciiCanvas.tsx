@@ -75,7 +75,7 @@ function setup({
 
 }
 
-export const XxxAsciiCanvas: FC = () => {
+export const AsciiCanvas: FC = () => {
     const canvas = useRef<HTMLDivElement>(null);
     const video = useRef<HTMLVideoElement>(null);
     const effectRan = useRef(false);
