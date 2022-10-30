@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from "next/head";
-import { AsciiCanvas } from '@/components/asciiCanvas'
+import { AsciiCanvas } from '@/components/AsciiCanvas'
 
 const ascii: NextPage = () => {
     return (
