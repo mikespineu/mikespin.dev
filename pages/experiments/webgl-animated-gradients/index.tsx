@@ -1,20 +1,20 @@
 import type { NextPage } from 'next'
 import Head from "next/head";
-import { AsciiCanvas } from '@/components/asciiCanvas'
+import { AnimatedGradients } from '@/components/AnimatedGradients';
 
-const ascii: NextPage = () => {
+const AnimatedGradientsPage: NextPage = () => {
     return (
         <>
             <Head>
-                <title>ELO from camera </title>
+                <title>WEBgL animated Gradients</title>
             </Head>
             <div className='m-0 p-0 bg-neutral-900 min-h-screen w-full flex justify-center items-center'>
                 <main className='text-center'>
-                    <AsciiCanvas />
+                    <AnimatedGradients />
                 </main>
             </div>
         </>
     )
 }
 
-export default ascii
+export default AnimatedGradientsPage

@@ -1,13 +1,11 @@
-import type { NextPage } from 'next'
-import Image from 'next/image'
+import type { NextPage } from 'next';
+import { MsLogoRefraction } from '@/components/MsLogoRefraction';
 
 const Home: NextPage = () => {
   return (
-    <div className='m-0 p-0 bg-neutral-900 min-h-screen w-full flex justify-center items-center'>
-      <main className='text-center'>
-        <Image src="/ms-logo.svg" alt="Vercel Logo" width={150} height={150} />
-        <h1 className='text-xl text-slate-100'>mikespin.dev !</h1>
-      </main>
+    <div className='m-0 p-0 min-h-screen w-full flex justify-center items-center relative'>
+        <MsLogoRefraction className="fixed top-0 left-0 p-8 md:p-16"/>
+        <a className="absolute bottom-1 md:bottom-5 right-8 md:right-16" href="mailto:michalkrecisz@yahoo.com">michalkrecisz@yahoo.com</a>
     </div>
   )
 }

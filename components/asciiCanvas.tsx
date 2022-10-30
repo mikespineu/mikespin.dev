@@ -1,4 +1,4 @@
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, FC} from "react";
 import * as THREE from "three";
 import {getDocumentHeight, getDocumentWidth} from "@/utils/utils.client";
 import {AsciiEffect} from "three/examples/jsm/effects/AsciiEffect";
@@ -75,7 +75,7 @@ function setup({
 
 }
 
-export function AsciiCanvas() {
+export const AsciiCanvas: FC = () => {
     const canvas = useRef<HTMLDivElement>(null);
     const video = useRef<HTMLVideoElement>(null);
     const effectRan = useRef(false);
