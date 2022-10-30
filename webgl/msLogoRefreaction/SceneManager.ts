@@ -2,9 +2,7 @@ import {
     Color,
     DirectionalLight,
     EquirectangularReflectionMapping,
-    IcosahedronGeometry,
-    Mesh, MeshBasicMaterial,
-    MeshNormalMaterial,
+    Mesh,
     MeshPhysicalMaterial,
     PlaneGeometry,
     RepeatWrapping,
@@ -26,7 +24,7 @@ export default class SceneManager extends Scene{
     private readonly RGBELoader = new RGBELoader();
     private readonly TextureLoader = new TextureLoader();
     private plane = {} as Mesh;
-    private logo = {} as Mesh;
+    private logoObject = {} as Mesh;
     palette: Color[]
     constructor({ palette } : { palette: Color[] }) {
         super();
@@ -62,6 +60,10 @@ export default class SceneManager extends Scene{
         this.add(light);
     }
 
+    getLogo() {
+        return this.logoObject;
+    }
+
     async createLogo() {
         const hdrEquirect = await this.RGBELoader.load(
             "empty_warehouse_01_1k.hdr",
@@ -82,10 +84,10 @@ export default class SceneManager extends Scene{
                 const geometry = logo.geometry.clone()
                 const material = new MeshPhysicalMaterial({
                     // metalness: 0,
-                    roughness: 0.23,
                     transmission: 0.9,
                     // @ts-ignore
                     thickness: 1.5,
+                    roughness: 0.07,
                     envMap: hdrEquirect,
                     envMapIntensity: 0.9,
                     clearcoatNormalMap: normalMapTexture,
@@ -99,13 +101,8 @@ export default class SceneManager extends Scene{
                 mesh.rotation.set( Math.PI / 2, 0, 0);
                 mesh.name = 'logo';
 
-
-                const geometry2 = new IcosahedronGeometry(1, 0);
-                const mesh2 = new Mesh(geometry2, material)
-
-
                 this.add(mesh);
-                // this.add(mesh2);
+                this.logoObject = mesh;
             },
         ); }
 
