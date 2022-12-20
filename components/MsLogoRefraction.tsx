@@ -1,4 +1,4 @@
-import {FC, useEffect, useRef} from "react";
+import {useEffect, useRef} from "react";
 import { setup as setupAnimatedGradients} from "../webgl/msLogoRefreaction";
 
 export const MsLogoRefraction = (
@@ -9,9 +9,11 @@ export const MsLogoRefraction = (
 
     useEffect(() => {
         if(!effectRan.current ) {
-            setupAnimatedGradients({
-                canvas: canvas.current as HTMLCanvasElement,
-            })
+            (async () => {
+                await setupAnimatedGradients({
+                    canvas: canvas.current as HTMLCanvasElement,
+                })
+            })();
         }
         return () => {
             effectRan.current = true;

@@ -194,3 +194,6 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/webstorm,macos,nextjs
 /.idea/jsLinters/eslint.xml
 /.idea/inspectionProfiles/Project_Default.xml
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/prettier.xml
+/.idea/codeStyles/Project.xml
