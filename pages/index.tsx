@@ -1,6 +1,6 @@
-import type {NextPage} from 'next'
-import {useEffect, useState} from 'react'
-import {MsLogoRefraction} from '@/components/MsLogoRefraction'
+import type { NextPage } from 'next'
+import { useEffect, useState } from 'react'
+import { MsLogoRefraction } from '@/components/MsLogoRefraction'
 
 interface Person {
   name: string
@@ -11,16 +11,14 @@ const Home: NextPage = () => {
   const [isLoading, setLoading] = useState(false)
 
   const getPeople = async () => {
-    setLoading(true);
-
+    setLoading(true)
 
     const response = await fetch('https://swapi.dev/api/people')
     const data = await response.json()
 
     setPeople(data.results)
     setLoading(false)
-    console.log('getPeople')
-  };
+  }
 
   useEffect(() => {
     getPeople()
@@ -32,15 +30,14 @@ const Home: NextPage = () => {
   if (!people) return <p>No profile data</p>
   return (
     <div className="m-0 p-0 min-h-screen w-full flex justify-center items-center relative">
-      <MsLogoRefraction className="fixed top-0 left-0 p-8 md:p-16"/>
+      <MsLogoRefraction className="fixed top-0 left-0 p-8 md:p-16" />
       <a
         className="absolute bottom-1 md:bottom-5 right-8 md:right-16"
         href="mailto:michalkrecisz@yahoo.com"
       >
         michalkrecisz@yahoo.com
-        {people.map((person, index) => (
-          <div key={index}>{person.name}</div>
-        ))}
+        {people &&
+          people.map((person, index) => <div key={index}>{person.name}</div>)}
       </a>
     </div>
   )
