@@ -30,7 +30,7 @@ const Lights: React.FC = () => {
             penumbra={0.5}
             position={[5, 5, 0]}
             castShadow
-            shadow-bias={-0.005}
+            shadow-bias={-0.015}
             target={createTarget("targetPostion2", { x: -4, y: 0, z: 0})}
         />
         <spotLight
@@ -40,8 +40,7 @@ const Lights: React.FC = () => {
             penumbra={0.5}
             position={[-5, 5, 0]}
             castShadow
-            shadow-bias={-0.01}
-        
+            shadow-bias={-0.015}
             target={createTarget("targetPostion", { x: 4, y: 0, z: 0})}
         />
       </>
