@@ -28,6 +28,8 @@ export default class SceneManager extends Scene {
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
     })
+
+
     this.plane = new Mesh(geometry, material)
     this.add(this.plane)
   }

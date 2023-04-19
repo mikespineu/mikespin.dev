@@ -1,4 +1,4 @@
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { useControls } from "leva";
 import { Object3D, PCFSoftShadowMap } from "three";
 
