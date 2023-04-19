@@ -1,5 +1,5 @@
-import { Color, PerspectiveCamera, WebGLRenderer } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { Color, HexColorString, PerspectiveCamera, WebGLRenderer } from 'three'
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import niceColors from 'nice-color-palettes'
 
 import { getDocumentHeight, getDocumentWidth } from '@/utils/utils.client'
@@ -10,15 +10,17 @@ type SetupPayload = {
   canvas: HTMLCanvasElement
 }
 
-const index = Math.floor((Math.random() * niceColors.length) | 0) // just to get a random color palette
-// const index = 24; // 17
-console.log('index', index)
 
-const palette = niceColors[index].map((color) => new Color(color))
+const selectedPallates = [6, 93, 73, 27, 29, 15, 36, 40]
+const getRandomIndex = (pallates: number[]) => Math.floor((Math.random() * pallates.length) | 0)
+
+const index = getRandomIndex(selectedPallates)
+const palette: Color[] = niceColors[index].map((color) => new Color(color as HexColorString))
+let SceneManagerInstance: SceneManager 
 
 export function setup({ canvas }: SetupPayload) {
-  const scene = new SceneManager({ palette })
-  scene.initialize()
+  SceneManagerInstance = new SceneManager({ palette })
+  SceneManagerInstance.initialize()
 
   const mainCamera: PerspectiveCamera = new PerspectiveCamera(
     45,
@@ -28,8 +30,8 @@ export function setup({ canvas }: SetupPayload) {
   )
   mainCamera.position.set(0, 0, 2.3)
   const renderer: WebGLRenderer = new WebGLRenderer({ antialias: true, canvas })
-  const controls = new OrbitControls(mainCamera, renderer.domElement)
-  controls.update()
+  // const controls = new OrbitControls(mainCamera, renderer.domElement)
+  // controls.update()
 
   renderer.setClearColor(new Color(0xffffff))
   renderer.setSize(getDocumentWidth(), getDocumentHeight())
@@ -38,16 +40,22 @@ export function setup({ canvas }: SetupPayload) {
     mainCamera.aspect = getDocumentWidth() / getDocumentHeight()
     mainCamera.updateProjectionMatrix()
     renderer.setSize(getDocumentWidth(), getDocumentHeight())
-    controls.update()
+    // controls.update()
   }
 
   window.addEventListener('resize', onWindowResize)
 
   const render = function () {
-    renderer.render(scene, mainCamera)
-    scene.update()
+    renderer.render(SceneManagerInstance, mainCamera)
+    SceneManagerInstance.update()
     requestAnimationFrame(render)
   }
 
   render()
+}
+
+export function changeGradient () {
+  const newIndex = getRandomIndex(selectedPallates)
+  const palette: Color[] = niceColors[newIndex].map((color) => new Color(color as HexColorString))
+  SceneManagerInstance.setPalette(palette)  
 }

@@ -18,7 +18,7 @@ export default class SceneManager extends Scene {
     this.palette = palette
   }
   initialize() {
-    const geometry = new PlaneGeometry(10, 8, 100, 100)
+    const geometry = new PlaneGeometry(20, 20, 200, 200)
     const material = new ShaderMaterial({
       uniforms: {
         time: { value: 1.0 },
@@ -32,7 +32,14 @@ export default class SceneManager extends Scene {
     this.add(this.plane)
   }
 
+  setPalette(palette: Color[]) {
+    this.palette = palette
+  }
+
   update() {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    this.plane.material.uniforms.uColor.value = this.palette
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.plane.material.uniforms.time.value += 0.0002
