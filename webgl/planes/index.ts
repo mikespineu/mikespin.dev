@@ -1,6 +1,5 @@
-import { Clock, Color, PerspectiveCamera, WebGLRenderer } from 'three'
+import {  Color, PerspectiveCamera, WebGLRenderer } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import niceColors from 'nice-color-palettes'
 
 import { getDocumentHeight, getDocumentWidth } from '@/utils/utils.client'
 
@@ -19,7 +18,7 @@ export function setup({ canvas }: SetupPayload) {
     0.1,
     1000
   )
-  mainCamera.position.set(0, 0, 12)
+  mainCamera.position.set(0, 0, 3)
   const renderer: WebGLRenderer = new WebGLRenderer({ antialias: true, canvas })
   const controls = new OrbitControls(mainCamera, renderer.domElement)
   controls.update()
@@ -40,7 +39,6 @@ export function setup({ canvas }: SetupPayload) {
     const timeMultiplier = 0.0003;
     renderer.render(scene, mainCamera)
     scene.update(t * timeMultiplier )
-    console.log('t', t)
     requestAnimationFrame(render)
   }
 
