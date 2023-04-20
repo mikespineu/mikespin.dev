@@ -1,4 +1,4 @@
-import { Color, PerspectiveCamera, WebGLRenderer } from 'three'
+import { Color, ColorRepresentation, PerspectiveCamera, WebGLRenderer } from 'three'
 import { gsap } from 'gsap'
 import niceColors from 'nice-color-palettes'
 
@@ -12,7 +12,7 @@ type SetupPayload = {
 // let index = Math.floor(Math.random() * niceColors.length | 0); // just to get a random color palette
 const index = 24 // 17
 
-const palette = niceColors[index].map((color) => new Color(color))
+const palette = niceColors[index].map((color) => new Color(color as ColorRepresentation))
 
 export async function setup({ canvas }: SetupPayload) {
   const scene = new SceneManager({ palette })
