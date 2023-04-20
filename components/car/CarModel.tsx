@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { Vector3, Box3, Mesh } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
-const CarModel: React.FC<{ isVisible: boolean}> = () => {
+const CarModel: React.FC = () => {
     const gltf = useLoader(GLTFLoader, '/car/bmw/scene.gltf')
     
     useEffect(() => {
