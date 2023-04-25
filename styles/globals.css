@@ -6,10 +6,6 @@
 @tailwind components;
 @tailwind utilities;
 
-#__next{
-    @apply min-h-screen;
-}
-
 * {
     /* font-family: 'Montserrat', sans-serif; */
     font-family: 'Monument extended', sans-serif;

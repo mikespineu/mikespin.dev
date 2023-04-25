@@ -1,5 +1,5 @@
 import {FC, useEffect, useRef} from "react";
-import { setup as setupAnimatedGradients } from "../webgl/animatedTexture";
+import { setup as setupAnimatedTexture } from "../webgl/animatedTexture";
 
 export const AnimatedTexture: FC = () => {
     const canvas = useRef<HTMLCanvasElement>(null);
@@ -8,7 +8,7 @@ export const AnimatedTexture: FC = () => {
 
     useEffect(() => {
         if(!effectRan.current ) {
-            setupAnimatedGradients({
+            setupAnimatedTexture({
                 canvas: canvas.current as HTMLCanvasElement,
             })
         }

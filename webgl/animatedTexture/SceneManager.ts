@@ -41,8 +41,8 @@ export default class SceneManager extends Scene {
     // const material = new MeshBasicMaterial({ color: 0x00ffff, map: texture })
     // const geometry = new SphereGeometry(1, 200, 200)
     // const geometry = new TorusGeometry(2, 1, 200, 200)
-    const geometry = new TorusKnotGeometry( 10, 3, 600, 16 );
-    const material = new ShaderMaterial({
+    const geometry = new TorusKnotGeometry( 10, 3, 600, 256 );
+    const material: ShaderMaterial = new ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uTexture: { value: texture },
@@ -73,7 +73,7 @@ export default class SceneManager extends Scene {
     // @ts-ignore
     // this.material.uniform.uTime.value = this.clock.getElapsedTime()
     
-    (this.plane.material as ShaderMaterial).uniforms.uTime.value += 0.004
+    this.plane.material.uniforms.uTime.value += 0.004
     // this.plane.rotation.y += 0.003
   }
 }
