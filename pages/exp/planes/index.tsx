@@ -6,10 +6,10 @@ const AnimatedGradientsPage: NextPage = () => {
     return (
         <>
             <Head>
-                <title>WEBgL animated Gradients</title>
+                <title>webGL abstract geometry animation</title>
             </Head>
-            <div className='m-0 p-0 bg-neutral-900 min-h-screen w-full flex justify-center items-center'>
-                <main className='text-center'>
+            <div className='m-0 p-0 bg-neutral-900 w-full flex justify-center items-center'>
+                <main>
                     <Planes />
                 </main>
             </div>

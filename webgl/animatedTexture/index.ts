@@ -35,6 +35,7 @@ export function setup({ canvas }: SetupPayload) {
 
   renderer.setClearColor(new Color(0x171616))
   renderer.setSize(getDocumentWidth(), getDocumentHeight())
+  renderer.setPixelRatio(3)
 
   function onWindowResize() {
     mainCamera.aspect = getDocumentWidth() / getDocumentHeight()
