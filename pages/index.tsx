@@ -1,43 +1,67 @@
 import type { NextPage } from 'next'
-import { useEffect, useState } from 'react'
-import { MsLogoRefraction } from '@/components/MsLogoRefraction'
+import { FC, Suspense, useRef } from 'react'
+import { Canvas, useLoader, useFrame } from '@react-three/fiber'
+import {
+  MeshReflectorMaterial,
+  OrbitControls,
+  PerspectiveCamera,
+  Text,
+} from '@react-three/drei'
+import { Mesh, TextureLoader, Vector2 } from 'three'
 
-interface Person {
-  name: string
+const textProps = {
+  fontSize: 3.9,
+  font: 'http://fonts.gstatic.com/s/modak/v5/EJRYQgs1XtIEskMA-hI.woff',
+}
+
+function Mirrors() {
+  // const [roughness, normal] = useLoader(TextureLoader, [
+  //   '/car/textures/terrain-roughness.jpg',
+  //   '/car/textures/terrain-normal.jpg',
+  // ])
+  //
+  // useFrame(() => {
+  //   if (ref.current) {
+  //     ref.current.rotation.y += 0.001
+  //     ref.current.rotation.z += -0.01
+  //   }
+  // })
+
+  return null
+}
+
+const Title: FC = () => {
+  return (
+    <Text
+      position={[0, 1, 0]}
+      material-toneMapped={false}
+      material-color="#FFFFFF"
+      fillOpacity={0.9}
+      {...textProps}
+    >
+      MIKESPIN
+    </Text>
+  )
 }
 
 const Home: NextPage = () => {
-  const [people, setPeople] = useState<Person[]>([])
-  const [isLoading, setLoading] = useState(false)
-
-  const getPeople = async () => {
-    setLoading(true)
-
-    const response = await fetch('https://swapi.dev/api/people')
-    const data = await response.json()
-
-    setPeople(data.results)
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    getPeople()
-    return () => {
-      getPeople()
-    }
-  }, [])
-  if (isLoading) return <p>Loading...</p>
-  if (!people) return <p>No profile data</p>
   return (
-    <div className="m-0 p-0 min-h-screen w-full flex justify-center items-center relative">
-      <MsLogoRefraction className="fixed top-0 left-0 p-8 md:p-16" />
+    <div className="h-screen min-h-screen">
+      <Suspense fallback={null}>
+        <Canvas shadows={true} camera={{ fov: 20 }}>
+          <OrbitControls target={[0, 0, 0]} maxPolarAngle={1.45} />
+          <PerspectiveCamera makeDefault position={[0, 2, 7]} fov={35} />
+          <color attach="background" args={['#000']} />
+          <Mirrors />
+          <Title />
+          <ambientLight intensity={0.4} />
+        </Canvas>
+      </Suspense>
       <a
         className="absolute bottom-1 md:bottom-5 right-8 md:right-16"
         href="mailto:michalkrecisz@yahoo.com"
       >
         michalkrecisz@yahoo.com
-        {people &&
-          people.map((person, index) => <div key={index}>{person.name}</div>)}
       </a>
     </div>
   )
