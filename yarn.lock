@@ -474,6 +474,16 @@
     "suspend-react" "^0.0.8"
     "zustand" "^3.7.1"
 
+"@react-three/postprocessing@^2.11.0":
+  "integrity" "sha512-PNfcOqE2EqoDbdFT5XtxuJJP7hAzijnJ3tZHxCmyH1qNyFN4ioif3XU+OR+NQLMHehH2tGMIHsQU/lFqREzDPQ=="
+  "resolved" "https://registry.npmjs.org/@react-three/postprocessing/-/postprocessing-2.11.0.tgz"
+  "version" "2.11.0"
+  dependencies:
+    "maath" "^0.5.3"
+    "postprocessing" "^6.30.2"
+    "screen-space-reflections" "2.5.0"
+    "three-stdlib" "^2.21.10"
+
 "@rushstack/eslint-patch@^1.1.3":
   "integrity" "sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg=="
   "resolved" "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz"
@@ -3037,6 +3047,11 @@
     "picocolors" "^1.0.0"
     "source-map-js" "^1.0.2"
 
+"postprocessing@^6.30.2", "postprocessing@^6.31.0", "postprocessing@>=6.28.0":
+  "integrity" "sha512-h1g2KDVrTS6QB4AHP55opp8FYzq66jJHh4JIFCptaj283RUX1y/tPkv8FBB2oK4WYrdPgqvElnKrXZwgiLWeHQ=="
+  "resolved" "https://registry.npmjs.org/postprocessing/-/postprocessing-6.31.0.tgz"
+  "version" "6.31.0"
+
 "potpack@^1.0.1":
   "integrity" "sha512-choctRBIV9EMT9WGAZHn3V7t0Z2pMQyl0EZE6pFc/6ml3ssw7Dlf/oAOvFwjm1HVsqfQN8GfeFyJ+d8tRzqueQ=="
   "resolved" "https://registry.npmjs.org/potpack/-/potpack-1.0.2.tgz"
@@ -3302,6 +3317,11 @@
     "@types/json-schema" "^7.0.8"
     "ajv" "^6.12.5"
     "ajv-keywords" "^3.5.2"
+
+"screen-space-reflections@2.5.0":
+  "integrity" "sha512-fWSDMhJS0xwD3LTxRRch7Lb9NzxsR66sCmtDmAA7i+OGnghUrBBsrha85ng7StnCBaLq/BKmZ97dLxWd1XgWdQ=="
+  "resolved" "https://registry.npmjs.org/screen-space-reflections/-/screen-space-reflections-2.5.0.tgz"
+  "version" "2.5.0"
 
 "semver@^6.3.0":
   "integrity" "sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw=="
@@ -3629,10 +3649,10 @@
   "resolved" "https://registry.npmjs.org/three-mesh-bvh/-/three-mesh-bvh-0.5.23.tgz"
   "version" "0.5.23"
 
-"three-stdlib@^2.21.8":
-  "integrity" "sha512-kqisiKvO4mSy59v5vWqBQSH8famLxp7Z51LxpMJI9GwDxqODaW02rhIwmjYDEzZWNFpjZpoDHVGbdpeHf8h3SA=="
-  "resolved" "https://registry.npmjs.org/three-stdlib/-/three-stdlib-2.21.8.tgz"
-  "version" "2.21.8"
+"three-stdlib@^2.21.10", "three-stdlib@^2.21.8":
+  "integrity" "sha512-fFeaMOc3lpup4A/FrSKHmp/PNYmyxyV8dzMorJpYyZBdIGAn5BmokGSN9ei8t7Wv9thxCW+VLaxA6csxTl5MYg=="
+  "resolved" "https://registry.npmjs.org/three-stdlib/-/three-stdlib-2.21.11.tgz"
+  "version" "2.21.11"
   dependencies:
     "@babel/runtime" "^7.16.7"
     "@types/offscreencanvas" "^2019.6.4"
@@ -3646,7 +3666,7 @@
     "potpack" "^1.0.1"
     "zstddec" "^0.0.2"
 
-"three@^0.151.3", "three@>= 0.123.0", "three@>=0.122.0", "three@>=0.125.0", "three@>=0.126", "three@>=0.126.1", "three@>=0.133", "three@>=0.137", "three@>=0.144.0":
+"three@^0.151.3", "three@>= 0.123.0", "three@>= 0.138.0 < 0.152.0", "three@>= 0.138.0 < 0.153.0", "three@>=0.122.0", "three@>=0.125.0", "three@>=0.126", "three@>=0.126.1", "three@>=0.133", "three@>=0.137", "three@>=0.141.0", "three@>=0.144.0":
   "integrity" "sha512-+vbuqxFy8kzLeO5MgpBHUvP/EAiecaDwDuOPPDe6SbrZr96kccF0ktLngXc7xA7bzyd3N0t2f6mw3Z9y6JCojQ=="
   "resolved" "https://registry.npmjs.org/three/-/three-0.151.3.tgz"
   "version" "0.151.3"

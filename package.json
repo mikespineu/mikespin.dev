@@ -11,12 +11,14 @@
   "dependencies": {
     "@react-three/drei": "^9.65.3",
     "@react-three/fiber": "^8.12.1",
+    "@react-three/postprocessing": "^2.11.0",
     "@types/three": "^0.150.1",
     "glslify-loader": "^2.0.0",
     "gsap": "^3.11.3",
     "maath": "^0.5.3",
     "next": "^13.3.0",
     "nice-color-palettes": "^2.0.0",
+    "postprocessing": "^6.31.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.151.3"
