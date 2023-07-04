@@ -70,13 +70,14 @@ function Poster({
   })
 
   return (
-    <group>
-      <mesh ref={meshRef} castShadow dispose={null}>
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    <group ref={meshRef}>
+      <mesh castShadow dispose={null}>
         <planeGeometry args={[0.45 * SCALE, 0.675 * SCALE, 30]} />
         <meshStandardMaterial map={texture} roughness={0.2} />
       </mesh>
       <mesh
-        ref={meshRef}
         rotation={[0, Math.PI, 0]}
         position={[0, 0, 0.001]}
         castShadow
@@ -161,7 +162,6 @@ const R3F: NextPage = () => {
             (_, i) => <Poster key={i} index={i} z={Math.round(easing(i / count) * depth)} speed={speed} textureId={i%2 + 1} /> /* prettier-ignore */
           )}
           <BgPlane />
-          {/*<OrbitControls />*/}
           <Environment preset="forest" blur={0.5} />
           <EffectComposer multisampling={0}>
             <DepthOfField
