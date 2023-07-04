@@ -71,8 +71,9 @@ function Poster({
   })
 
   return (
-    <group ref={meshRef}>
+    <group>
       <mesh
+        ref={meshRef}
         onClick={() => console.log('textureId', textureId)}
         castShadow
         dispose={null}
@@ -81,6 +82,7 @@ function Poster({
         <meshStandardMaterial map={texture} roughness={0.2} />
       </mesh>
       <mesh
+        ref={meshRef}
         onClick={() => console.log('textureId', textureId)}
         rotation={[0, Math.PI, 0]}
         position={[0, 0, 0.001]}
