@@ -1,11 +1,14 @@
-export default function ButtonAr() {
+import { FC } from 'react'
+
+const ButtonAr: FC<{ blob: Blob | null }> = ({ blob }) => {
+  if (!blob) return null
   return (
     <a
       className="px-2 bg-slate-200 z-10 rounded-md"
       id="link"
       rel="ar"
-      href=""
       download="asset.usdz"
+      href={URL.createObjectURL(blob)}
     >
       View in AR
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -13,3 +16,5 @@ export default function ButtonAr() {
     </a>
   )
 }
+
+export default ButtonAr
