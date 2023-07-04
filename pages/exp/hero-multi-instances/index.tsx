@@ -5,7 +5,6 @@ import { Suspense, useMemo, useRef, useState } from 'react'
 import { Color, Mesh, Vector2 } from 'three'
 import * as THREE from 'three'
 import { EffectComposer, DepthOfField } from '@react-three/postprocessing'
-import niceColors from 'nice-color-palettes'
 
 import fragmentShader from '../../../webgl/animatedGradients/fragmentShader.glsl'
 import vertexShader from '../../../webgl/animatedGradients/vertexShader.glsl'
@@ -72,18 +71,12 @@ function Poster({
 
   return (
     <group>
-      <mesh
-        ref={meshRef}
-        onClick={() => console.log('textureId', textureId)}
-        castShadow
-        dispose={null}
-      >
+      <mesh ref={meshRef} castShadow dispose={null}>
         <planeGeometry args={[0.45 * SCALE, 0.675 * SCALE, 30]} />
         <meshStandardMaterial map={texture} roughness={0.2} />
       </mesh>
       <mesh
         ref={meshRef}
-        onClick={() => console.log('textureId', textureId)}
         rotation={[0, Math.PI, 0]}
         position={[0, 0, 0.001]}
         castShadow
@@ -97,16 +90,6 @@ function Poster({
 }
 
 const BgPlane = () => {
-  const selectedPallates = [0]
-  const getRandomIndex = (pallates: number[]) =>
-    Math.floor((Math.random() * pallates.length) | 0)
-
-  const index = getRandomIndex(selectedPallates)
-
-  const palette: Color[] = niceColors[20].map(
-    (color) => new Color(color as HexColorString)
-  )
-
   const palette2: Color[] = [
     new Color('#000000'),
     new Color('#252526'),
@@ -132,7 +115,6 @@ const BgPlane = () => {
     data.uniforms.time.value += 0.0003
   })
 
-  console.log('palette', palette, index, niceColors)
   return (
     <mesh
       receiveShadow
