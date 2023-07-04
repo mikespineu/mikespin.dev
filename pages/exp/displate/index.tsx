@@ -1,10 +1,9 @@
 import type { NextPage } from 'next'
 import { Canvas } from '@react-three/fiber'
-import { Suspense, useEffect, useRef } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import {
   OrbitControls,
   PerspectiveCamera,
-  Environment,
   AccumulativeShadows,
   RandomizedLight,
 } from '@react-three/drei'
@@ -12,22 +11,8 @@ import { Group, Mesh, Vector3 } from 'three'
 import { USDZExporter } from 'three/examples/jsm/exporters/USDZExporter'
 import Poster from '@/components/3dViews/displate/Poster'
 import ButtonAr from '@/components/dom/displate/ButtonAr'
-import Room from '@/components/3dViews/displate/Room'
 
 function Backdrop() {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const shadows = useRef<typeof AccumulativeShadows>(null!)
-
-  // useFrame((state, delta) => {
-  //   if (!shadows.current) return
-  //   return easing.dampC(
-  //     shadows.current.getMesh().material.color,
-  //     state.selectedColor,
-  //     0.25,
-  //     delta
-  //   )
-  // })
-
   return (
     <AccumulativeShadows
       temporal
@@ -35,7 +20,7 @@ function Backdrop() {
       alphaTest={0.85}
       scale={10}
       rotation={[Math.PI / 2, 0, 0]}
-      position={[0, 0, -0.03]}
+      position={[0, 0, -0.01]}
       color="#fff"
       opacity={0.5}
     >
@@ -59,28 +44,24 @@ function Backdrop() {
 
 const R3F: NextPage = () => {
   const position = new Vector3(0, 0, 2.5)
+  const [blob, setBlob] = useState<Blob | null>(null)
   const fov = 25
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const mesh = useRef<Group>(null!)
+  const mesh = useRef<Group | null>(null)
 
   const createBlob = async (mesh: Mesh | Group) => {
     const exporter = new USDZExporter()
     const arraybuffer = await exporter.parse(mesh)
-    const blob = new Blob([arraybuffer], { type: 'application/octet-stream' })
-    const link = document.getElementById('link') as HTMLLinkElement
-    if (link) {
-      link.href = URL.createObjectURL(blob)
-    }
+    setBlob(new Blob([arraybuffer], { type: 'application/octet-stream' }))
   }
-
   useEffect(() => {
+    // no idea when Canvas is ready
     const interval = setInterval(async () => {
       if (!mesh.current) return
-      await createBlob(mesh.current)
+      if (!blob) await createBlob(mesh.current)
     }, 1000)
     return () => clearInterval(interval)
-  }, [])
+  }, [blob])
 
   const posterList = [
     { positionX: 0.3, textureId: 1 },
@@ -88,7 +69,7 @@ const R3F: NextPage = () => {
   ]
 
   return (
-    <div className="h-screen min-h-screen" suppressHydrationWarning={true}>
+    <div className="h-screen min-h-screen">
       <Suspense fallback={null}>
         <Canvas
           shadows
@@ -104,9 +85,6 @@ const R3F: NextPage = () => {
           />
           <PerspectiveCamera makeDefault position={position} fov={fov} />
           <ambientLight intensity={1} />
-
-          {/*<Environment preset="city" />*/}
-
           <Backdrop />
           <group ref={mesh}>
             {posterList.map(({ positionX, textureId }) => (
@@ -117,11 +95,10 @@ const R3F: NextPage = () => {
               />
             ))}
           </group>
-          <Room />
         </Canvas>
       </Suspense>
       <div className="fixed top-2 right-2">
-        <ButtonAr />
+        <ButtonAr blob={blob} />
       </div>
     </div>
   )
