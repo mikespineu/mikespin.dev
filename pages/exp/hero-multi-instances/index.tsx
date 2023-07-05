@@ -111,7 +111,7 @@ const BgPlane = () => {
       fragmentShader,
       vertexShader,
     }),
-    []
+    [palette2]
   )
 
   useFrame(() => {
