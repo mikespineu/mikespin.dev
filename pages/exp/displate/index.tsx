@@ -4,46 +4,19 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import {
   OrbitControls,
   PerspectiveCamera,
-  AccumulativeShadows,
-  RandomizedLight,
+  SoftShadows,
 } from '@react-three/drei'
+import { Scene } from '@/components/3dViews/displate/Scene'
 import { Group, Mesh, Vector3 } from 'three'
 import { USDZExporter } from 'three/examples/jsm/exporters/USDZExporter'
 import Poster from '@/components/3dViews/displate/Poster'
 import ButtonAr from '@/components/dom/displate/ButtonAr'
-
-function Backdrop() {
-  return (
-    <AccumulativeShadows
-      temporal
-      frames={40}
-      alphaTest={0.85}
-      scale={10}
-      rotation={[Math.PI / 2, 0, 0]}
-      position={[0, 0, -0.01]}
-      color="#fff"
-      opacity={0.5}
-    >
-      <RandomizedLight
-        amount={4}
-        radius={9}
-        intensity={0.55}
-        ambient={0.25}
-        position={[5, 5, -10]}
-      />
-      <RandomizedLight
-        amount={4}
-        radius={5}
-        intensity={0.25}
-        ambient={0.55}
-        position={[-5, 5, -9]}
-      />
-    </AccumulativeShadows>
-  )
-}
+import Lights from '@/components/3dViews/displate/Lights'
+import Wall from '@/components/3dViews/displate/Wall'
+import Effect from '@/components/3dViews/displate/Effect'
 
 const R3F: NextPage = () => {
-  const position = new Vector3(0, 0, 2.5)
+  const cameraPosition = new Vector3(0, 0.5, 3.5)
   const [blob, setBlob] = useState<Blob | null>(null)
   const fov = 25
 
@@ -64,8 +37,7 @@ const R3F: NextPage = () => {
   }, [blob])
 
   const posterList = [
-    { positionX: 0.3, textureId: 1 },
-    { positionX: -0.3, textureId: 2 },
+    { positionX: 0, positionY: 0.3, positionZ: 0.001, textureId: 1 },
   ]
 
   return (
@@ -76,25 +48,35 @@ const R3F: NextPage = () => {
           gl={{ preserveDrawingBuffer: true }}
           eventPrefix="client"
         >
+          <SoftShadows samples={20} size={50} />
           <OrbitControls
             target={[0, 0, 0]}
             maxPolarAngle={1.85}
             minPolarAngle={1.05}
-            maxAzimuthAngle={(Math.PI / 180) * 85}
-            minAzimuthAngle={(-Math.PI / 180) * 85}
+            maxAzimuthAngle={(Math.PI / 180) * 35}
+            minAzimuthAngle={(-Math.PI / 180) * 35}
+            minDistance={1}
+            maxDistance={4}
           />
-          <PerspectiveCamera makeDefault position={position} fov={fov} />
-          <ambientLight intensity={1} />
-          <Backdrop />
+          <PerspectiveCamera makeDefault position={cameraPosition} fov={fov} />
           <group ref={mesh}>
-            {posterList.map(({ positionX, textureId }) => (
-              <Poster
-                key={`text-${textureId}`}
-                positionX={positionX}
-                textureId={textureId}
-              />
-            ))}
+            {posterList.map(
+              ({ positionX, textureId, positionY, positionZ }) => (
+                <Poster
+                  key={`text-${textureId}`}
+                  positionX={positionX}
+                  positionY={positionY}
+                  positionZ={positionZ}
+                  textureId={textureId}
+                />
+              )
+            )}
           </group>
+          <Scene position={new Vector3(0, -1, 0.25)} />
+          <Wall />
+          <Lights />
+          <Effect />
+          <fog attach="fog" args={['#d0d0d0', 8, 35]} />
         </Canvas>
       </Suspense>
       <div className="fixed top-2 right-2">

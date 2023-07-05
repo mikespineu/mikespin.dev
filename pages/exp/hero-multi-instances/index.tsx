@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { Environment, useTexture } from '@react-three/drei'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Suspense, useMemo, useRef, useState } from 'react'
-import { Color, Mesh, Vector2 } from 'three'
+import { Color, Mesh, Vector2, Vector3 } from 'three'
 import * as THREE from 'three'
 import { EffectComposer, DepthOfField } from '@react-three/postprocessing'
 
@@ -14,16 +14,18 @@ function Poster({
   z,
   speed,
   textureId = 1,
+  position,
 }: {
   index: number
   z: number
   speed: number
   textureId: number
+  position: Vector3
 }) {
   const meshRef = useRef<Mesh | null>(null)
   const { viewport, camera } = useThree()
   const OFFSET_Y = 0.5
-  const SCALE = 3.5
+  const SCALE = 1.5
   const { width, height } = viewport.getCurrentViewport(camera, [
     0,
     0,
@@ -35,9 +37,9 @@ function Poster({
 
   const [data] = useState({
     // Randomly distributing the objects along the vertical
-    y: THREE.MathUtils.randFloatSpread(height * 2),
+    y: position.y,
     // This gives us a random value between -1 and 1, we will multiply it with the viewport width
-    x: THREE.MathUtils.randFloatSpread(4),
+    x: position.x,
     // How fast objects spin, randFlost gives us a value between min and max, in this case 8 and 12
     spin: THREE.MathUtils.randFloat(1, 4),
     // Some random rotations, Math.PI represents 360 degrees in radian
@@ -54,14 +56,14 @@ function Poster({
     // We cap dt at 0.1 because now it can't accumulate while the user changes the tab, it will simply stop
     if (dt < 0.1)
       meshRef.current.position.set(
-        index === 0 ? 0 : data.x * width,
-        (data.y += dt * speed),
-        -z
+        position.x,
+        (position.y += dt * speed),
+        position.z
       )
     // Rotate the object around
     meshRef.current.rotation.set(
       Math.cos((data.rX += dt / data.spin)) / 2,
-      Math.sin(index * 1000 + state.clock.elapsedTime / 10) * Math.PI,
+      Math.sin(index * 1000 + state.clock.elapsedTime / 5) - (index % 5),
       0
     )
     // If they're too far up, set them back to the bottom
@@ -135,6 +137,62 @@ const R3F: NextPage = () => {
   const speed = 0.5
   const easing = (x: number) => Math.sqrt(1 - Math.pow(x - 1, 2))
 
+  function generateNonOverlappingCoordinates(): THREE.Vector3[] {
+    const sceneSize = new THREE.Vector3(10, 10, 5)
+    const elementSize = new THREE.Vector3(1, 1, 1)
+    const totalElements = 100
+    const coordinates: THREE.Vector3[] = []
+
+    for (let i = 0; i < totalElements; i++) {
+      let isValid = false
+      let position: THREE.Vector3 | null = null
+
+      while (!isValid) {
+        position = getRandomPosition(sceneSize, elementSize)
+        isValid = checkCollision(position, elementSize, coordinates)
+      }
+      if (position) coordinates.push(position)
+    }
+
+    return coordinates
+  }
+
+  function getRandomPosition(
+    sceneSize: THREE.Vector3,
+    elementSize: THREE.Vector3
+  ): THREE.Vector3 {
+    const x = Math.floor(Math.random() * (sceneSize.x - elementSize.x + 1))
+    const y = Math.floor(Math.random() * (sceneSize.y - elementSize.y + 1))
+    const z = Math.floor(Math.random() * (sceneSize.z - elementSize.z + 1))
+
+    return new THREE.Vector3(x, y, z)
+  }
+
+  function checkCollision(
+    position: THREE.Vector3,
+    elementSize: THREE.Vector3,
+    coordinates: THREE.Vector3[]
+  ): boolean {
+    for (const coord of coordinates) {
+      if (
+        position.x < coord.x + elementSize.x &&
+        position.x + elementSize.x > coord.x &&
+        position.y < coord.y + elementSize.y &&
+        position.y + elementSize.y > coord.y &&
+        position.z < coord.z + elementSize.z &&
+        position.z + elementSize.z > coord.z
+      ) {
+        return false // Kolizja
+      }
+    }
+
+    return true // Brak kolizji
+  }
+
+  // Przykład użycia
+  const generatedCoordinates = generateNonOverlappingCoordinates()
+  console.log(generatedCoordinates)
+
   return (
     <div className="h-screen min-h-screen">
       <Suspense fallback={null}>
@@ -157,10 +215,16 @@ const R3F: NextPage = () => {
             intensity={3}
             color="white"
           />
-          {Array.from(
-            { length: count },
-            (_, i) => <Poster key={i} index={i} z={Math.round(easing(i / count) * depth)} speed={speed} textureId={i%2 + 1} /> /* prettier-ignore */
-          )}
+          {generatedCoordinates.map((coord, i) => (
+            <Poster
+              key={i}
+              index={i}
+              z={Math.round(easing(i / count) * depth)}
+              speed={speed}
+              textureId={(i % 2) + 1}
+              position={coord}
+            />
+          ))}
           <BgPlane />
           <Environment preset="forest" blur={0.5} />
           <EffectComposer multisampling={0}>
