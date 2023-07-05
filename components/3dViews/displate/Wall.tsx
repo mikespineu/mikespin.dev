@@ -6,7 +6,7 @@ export default function Wall({
   position?: Vector3
 }) {
   const size: Vector2 = new Vector2(10, 5)
-  const color: Color = new Color(163, 184, 167)
+  const color: Color = new Color('#a39390')
   return (
     <mesh receiveShadow={true} position={position}>
       <planeGeometry args={[size.x, size.y, 2]} />

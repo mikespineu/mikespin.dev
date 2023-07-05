@@ -85,7 +85,6 @@ export function Scene(props) {
         />
       </group>
       <group
-        receiveShadow={true}
         castShadow={true}
         position={[0.34, 0.77, -0.04]}
         rotation={[1.19, -0.16, -2.83]}
@@ -263,6 +262,7 @@ export function Scene(props) {
         />
       </group>
       <group position={[0, 0.16, 0.04]} scale={0.01}>
+        {/*  this whole furniture*/}
         <mesh
           receiveShadow={true}
           castShadow={true}
@@ -275,7 +275,6 @@ export function Scene(props) {
         />
         <mesh
           receiveShadow={true}
-          castShadow={true}
           geometry={
             nodes.LE_Sideboard_Poliform_Pandora_4_001_primitive1.geometry
           }
@@ -290,6 +289,8 @@ export function Scene(props) {
         scale={0.01}
       >
         <mesh
+          receiveShadow={true}
+          castShadow={true}
           geometry={nodes.LE_Vase_Habitat_Scratch_001_primitive0.geometry}
           material={materials.LE_Vase_Habitat_Scratch_001}
           position={[0, 6.73, 0]}
