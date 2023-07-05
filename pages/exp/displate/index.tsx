@@ -13,7 +13,6 @@ import Poster from '@/components/3dViews/displate/Poster'
 import ButtonAr from '@/components/dom/displate/ButtonAr'
 import Lights from '@/components/3dViews/displate/Lights'
 import Wall from '@/components/3dViews/displate/Wall'
-import Effect from '@/components/3dViews/displate/Effect'
 
 const R3F: NextPage = () => {
   const cameraPosition = new Vector3(0, 0.5, 3.5)
@@ -75,7 +74,6 @@ const R3F: NextPage = () => {
           <Scene position={new Vector3(0, -1, 0.25)} />
           <Wall />
           <Lights />
-          <Effect />
           <fog attach="fog" args={['#d0d0d0', 8, 35]} />
         </Canvas>
       </Suspense>
