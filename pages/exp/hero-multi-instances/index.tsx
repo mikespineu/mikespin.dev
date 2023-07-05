@@ -56,7 +56,7 @@ function Poster({
     // We cap dt at 0.1 because now it can't accumulate while the user changes the tab, it will simply stop
     if (dt < 0.1)
       meshRef.current.position.set(
-        position.x,
+        position.x - (width / 2) * data.x,
         (position.y += dt * speed),
         position.z
       )
