@@ -48,9 +48,9 @@ const R3F: NextPage = () => {
     const interval = setInterval(async () => {
       if (!mesh.current) return
       if (!blob) await createBlob(mesh.current)
-    }, 3000)
+    }, 1000)
     return () => clearInterval(interval)
-  }, [])
+  }, [blob])
 
   const posterList = [
     { positionX: 0, positionY: 0.3, positionZ: 0.003, textureId: 1 },
@@ -93,6 +93,7 @@ const R3F: NextPage = () => {
             <Wall />
             <Lights />
           </CameraRig>
+          <fog attach="fog" args={['#d0d0d0', 8, 35]} />
         </Canvas>
       </Suspense>
       <div className="fixed top-4 right-2">
