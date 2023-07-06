@@ -15,7 +15,9 @@ import Wall from '@/components/3dViews/displate/Wall'
 
 
 const R3F: NextPage = () => {
+  const cameraPosition = new Vector3(0, 0.5, 3.5)
   const [blob, setBlob] = useState<Blob | null>(null)
+  const fov = 25
 
   const mesh = useRef<Group | null>(null)
 
