@@ -12,7 +12,7 @@ export function Scene(props) {
   useEffect(() => {
     Object.keys(nodes).forEach((key) => {
       if (nodes[key].material?.envMapIntensity) {
-        nodes[key].material.envMapIntensity = 0.3
+        nodes[key].material.envMapIntensity = 0.1
       }
     })
   }, [nodes])

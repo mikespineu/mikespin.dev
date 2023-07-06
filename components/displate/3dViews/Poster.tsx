@@ -1,6 +1,8 @@
 import { useTexture } from '@react-three/drei'
 import { useRef } from 'react'
 import { Mesh, Vector3 } from 'three'
+import useConfigurationState from '@/components/displate/state/configurationState'
+
 interface Props {
   positionX: number
   positionY: number
@@ -14,6 +16,7 @@ export default function Poster({
   positionZ,
 }: Props) {
   const meshRef = useRef<Mesh | null>(null)
+  const { finish } = useConfigurationState((state) => state)
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const texture = useTexture(`/displate/texture_${textureId}.jpg`)
@@ -30,8 +33,9 @@ export default function Poster({
         <planeGeometry args={[0.45, 0.675, 30]} />
         <meshStandardMaterial
           map={texture}
-          roughness={0.5}
-          envMapIntensity={0}
+          roughness={finish ? 0.1 : 0.95}
+          metalness={finish ? 0.2 : 0}
+          envMapIntensity={0.2}
         />
       </mesh>
       <mesh

@@ -1,40 +1,24 @@
 import type { NextPage } from 'next'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { ReactNode, Suspense, useEffect, useRef, useState } from 'react'
-import {
-  OrbitControls,
-  PerspectiveCamera,
-  SoftShadows,
-} from '@react-three/drei'
-import { Scene } from '@/components/3dViews/displate/Scene'
+import { Canvas } from '@react-three/fiber'
+import { useMediaQuery } from 'usehooks-ts'
+import { Suspense, useEffect, useRef, useState } from 'react'
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
+import { Scene } from '@/components/displate/3dViews/Scene'
 import { Group, Mesh, Vector3 } from 'three'
 import { USDZExporter } from 'three/examples/jsm/exporters/USDZExporter'
-import Poster from '@/components/3dViews/displate/Poster'
+import Poster from '@/components/displate/3dViews/Poster'
 import ButtonAr from '@/components/dom/displate/ButtonAr'
-import Lights from '@/components/3dViews/displate/Lights'
-import Wall from '@/components/3dViews/displate/Wall'
-import { easing } from 'maath'
-
-function CameraRig({ children }: { children: ReactNode }) {
-  const group = useRef<Mesh | null>(null)
-  useFrame((state, delta) => {
-    if (!group.current) return
-    easing.dampE(
-      group.current.rotation,
-      [state.pointer.y / 20, -state.pointer.x / 10, 0],
-      0.25,
-      delta
-    )
-  })
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  return <group ref={group}>{children}</group>
-}
+import Lights from '@/components/displate/3dViews/Lights'
+import Wall from '@/components/displate/3dViews/Wall'
+import Effect from '@/components/displate/3dViews/Effect'
+import ConfiguratorPanel from '@/components/displate/ui/ConfigurationPanel'
 
 const R3F: NextPage = () => {
   const cameraPosition = new Vector3(0, 0.5, 3.5)
   const [blob, setBlob] = useState<Blob | null>(null)
   const fov = 25
+
+  const isMinWidth450 = useMediaQuery('(min-width: 450px)')
 
   const mesh = useRef<Group | null>(null)
 
@@ -57,16 +41,15 @@ const R3F: NextPage = () => {
   ]
 
   return (
-    <div className="h-screen min-h-screen">
+    <div className="h-screen min-h-screen relative">
       <Suspense fallback={null}>
         <Canvas
           shadows
           gl={{ preserveDrawingBuffer: true }}
           eventPrefix="client"
         >
-          <SoftShadows samples={32} size={64} focus={0.4} />
           <OrbitControls
-            target={[0, 0, 0]}
+            target={[isMinWidth450 ? 0.35 : 0, 0, 0]}
             maxPolarAngle={1.85}
             minPolarAngle={1.05}
             maxAzimuthAngle={(Math.PI / 180) * 35}
@@ -75,27 +58,27 @@ const R3F: NextPage = () => {
             maxDistance={4}
           />
           <PerspectiveCamera makeDefault position={cameraPosition} fov={fov} />
-          <CameraRig>
-            <group ref={mesh}>
-              {posterList.map(
-                ({ positionX, textureId, positionY, positionZ }) => (
-                  <Poster
-                    key={`text-${textureId}`}
-                    positionX={positionX}
-                    positionY={positionY}
-                    positionZ={positionZ}
-                    textureId={textureId}
-                  />
-                )
-              )}
-            </group>
-            <Scene position={new Vector3(0, -1, 0.25)} />
-            <Wall />
-            <Lights />
-          </CameraRig>
-          <fog attach="fog" args={['#d0d0d0', 8, 35]} />
+          <group ref={mesh}>
+            {posterList.map(
+              ({ positionX, textureId, positionY, positionZ }) => (
+                <Poster
+                  key={`text-${textureId}`}
+                  positionX={positionX}
+                  positionY={positionY}
+                  positionZ={positionZ}
+                  textureId={textureId}
+                />
+              )
+            )}
+          </group>
+          <Scene position={new Vector3(0, -1, 0.25)} />
+          <Wall />
+          <Lights />
+          <Effect />
+          <fog attach="fog" args={['#d0d0d0', 6, 6]} />
         </Canvas>
       </Suspense>
+      <ConfiguratorPanel />
       <div className="fixed top-4 right-2">
         <ButtonAr blob={blob} />
       </div>
