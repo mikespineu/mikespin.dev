@@ -15,6 +15,21 @@ import Lights from '@/components/3dViews/displate/Lights'
 import Wall from '@/components/3dViews/displate/Wall'
 import { easing } from 'maath'
 
+function CameraRig({ children }: { children: ReactNode }) {
+  const group = useRef<Mesh | null>(null)
+  useFrame((state, delta) => {
+    if (!group.current) return
+    easing.dampE(
+      group.current.rotation,
+      [state.pointer.y / 20, -state.pointer.x / 10, 0],
+      0.25,
+      delta
+    )
+  })
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return <group ref={group}>{children}</group>
+}
 
 const R3F: NextPage = () => {
   const cameraPosition = new Vector3(0, 0.5, 3.5)
@@ -60,22 +75,24 @@ const R3F: NextPage = () => {
             maxDistance={4}
           />
           <PerspectiveCamera makeDefault position={cameraPosition} fov={fov} />
-          <group ref={mesh}>
-            {posterList.map(
-              ({ positionX, textureId, positionY, positionZ }) => (
-                <Poster
-                  key={`text-${textureId}`}
-                  positionX={positionX}
-                  positionY={positionY}
-                  positionZ={positionZ}
-                  textureId={textureId}
-                />
-              )
-            )}
-          </group>
-          <Scene position={new Vector3(0, -1, 0.25)} />
-          <Wall />
-          <Lights />
+          <CameraRig>
+            <group ref={mesh}>
+              {posterList.map(
+                ({ positionX, textureId, positionY, positionZ }) => (
+                  <Poster
+                    key={`text-${textureId}`}
+                    positionX={positionX}
+                    positionY={positionY}
+                    positionZ={positionZ}
+                    textureId={textureId}
+                  />
+                )
+              )}
+            </group>
+            <Scene position={new Vector3(0, -1, 0.25)} />
+            <Wall />
+            <Lights />
+          </CameraRig>
         </Canvas>
       </Suspense>
       <div className="fixed top-4 right-2">
