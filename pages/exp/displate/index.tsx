@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { Suspense, useEffect, useRef, useState } from 'react'
 import {
   OrbitControls,
+  PerspectiveCamera,
   SoftShadows,
 } from '@react-three/drei'
 import { Scene } from '@/components/3dViews/displate/Scene'
@@ -49,12 +50,15 @@ const R3F: NextPage = () => {
         >
           <SoftShadows samples={32} size={64} focus={0.4} />
           <OrbitControls
-            target={[0.5, 0, 0]}
+            target={[0, 0, 0]}
             maxPolarAngle={1.85}
             minPolarAngle={1.05}
             maxAzimuthAngle={(Math.PI / 180) * 35}
             minAzimuthAngle={(-Math.PI / 180) * 35}
+            minDistance={1}
+            maxDistance={4}
           />
+          <PerspectiveCamera makeDefault position={cameraPosition} fov={fov} />
           <group ref={mesh}>
             {posterList.map(
               ({ positionX, textureId, positionY, positionZ }) => (
