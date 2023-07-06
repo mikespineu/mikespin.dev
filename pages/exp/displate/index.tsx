@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { ReactNode, Suspense, useEffect, useRef, useState } from 'react'
+import { Canvas } from '@react-three/fiber'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import {
   OrbitControls,
   PerspectiveCamera,
@@ -13,7 +13,6 @@ import Poster from '@/components/3dViews/displate/Poster'
 import ButtonAr from '@/components/dom/displate/ButtonAr'
 import Lights from '@/components/3dViews/displate/Lights'
 import Wall from '@/components/3dViews/displate/Wall'
-import { easing } from 'maath'
 
 
 const R3F: NextPage = () => {
