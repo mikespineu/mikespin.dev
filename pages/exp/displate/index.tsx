@@ -53,7 +53,7 @@ const R3F: NextPage = () => {
   }, [blob])
 
   const posterList = [
-    { positionX: 0, positionY: 0.3, positionZ: 0.001, textureId: 1 },
+    { positionX: 0, positionY: 0.3, positionZ: 0.003, textureId: 1 },
   ]
 
   return (
@@ -64,7 +64,7 @@ const R3F: NextPage = () => {
           gl={{ preserveDrawingBuffer: true }}
           eventPrefix="client"
         >
-          <SoftShadows samples={20} size={50} />
+          <SoftShadows samples={32} size={64} focus={0.4} />
           <OrbitControls
             target={[0, 0, 0]}
             maxPolarAngle={1.85}
@@ -91,8 +91,8 @@ const R3F: NextPage = () => {
             </group>
             <Scene position={new Vector3(0, -1, 0.25)} />
             <Wall />
+            <Lights />
           </CameraRig>
-          <Lights />
           <fog attach="fog" args={['#d0d0d0', 8, 35]} />
         </Canvas>
       </Suspense>

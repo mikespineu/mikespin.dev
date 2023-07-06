@@ -10,7 +10,7 @@ const ButtonAr: FC<{ blob: Blob | null }> = ({ blob }) => {
       download="asset.usdz"
       href={URL.createObjectURL(blob)}
     >
-      View in <span className="font-bold">AR</span>
+      View in AR
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/arkit.png" alt="ARKit" className="w-4 h-4 ml-1 hidden" />
     </a>
