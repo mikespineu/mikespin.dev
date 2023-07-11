@@ -1,4 +1,4 @@
-import { Color, HexColorString, PerspectiveCamera, WebGLRenderer } from 'three'
+import { Color, PerspectiveCamera, WebGLRenderer } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import niceColors from 'nice-color-palettes'
 
@@ -10,13 +10,13 @@ type SetupPayload = {
   canvas: HTMLCanvasElement
 }
 
-
 const selectedPallates = [6, 93, 73, 27, 29, 15, 36, 40]
-const getRandomIndex = (pallates: number[]) => Math.floor((Math.random() * pallates.length) | 0)
+const getRandomIndex = (pallates: number[]) =>
+  Math.floor((Math.random() * pallates.length) | 0)
 
 const index = getRandomIndex(selectedPallates)
-const palette: Color[] = niceColors[index].map((color) => new Color(color as HexColorString))
-let SceneManagerInstance: SceneManager 
+const palette: Color[] = niceColors[index].map((color) => new Color(color))
+let SceneManagerInstance: SceneManager
 
 export function setup({ canvas }: SetupPayload) {
   SceneManagerInstance = new SceneManager({ palette })
@@ -55,8 +55,8 @@ export function setup({ canvas }: SetupPayload) {
   render()
 }
 
-export function changeGradient () {
+export function changeGradient() {
   const newIndex = getRandomIndex(selectedPallates)
-  const palette: Color[] = niceColors[newIndex].map((color) => new Color(color as HexColorString))
-  SceneManagerInstance.setPalette(palette)  
+  const palette: Color[] = niceColors[newIndex].map((color) => new Color(color))
+  SceneManagerInstance.setPalette(palette)
 }
