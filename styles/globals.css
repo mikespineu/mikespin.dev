@@ -7,8 +7,8 @@
 @tailwind utilities;
 
 * {
-    /* font-family: 'Montserrat', sans-serif; */
-    font-family: 'Montserrat', sans-serif;
+     font-family: 'momentum', sans-serif;
+    /*font-family: 'Montserrat', sans-serif;*/
 }
 
 html {

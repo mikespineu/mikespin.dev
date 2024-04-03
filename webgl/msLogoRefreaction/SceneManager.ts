@@ -34,9 +34,6 @@ export default class SceneManager extends Scene {
     this.createBackground()
     await this.createLogo()
     this.createLight()
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    window.scene = this
   }
 
   createBackground() {
@@ -76,27 +73,33 @@ export default class SceneManager extends Scene {
     normalMapTexture.wrapS = RepeatWrapping
     normalMapTexture.wrapT = RepeatWrapping
 
-    this.gltfLoader.load('/ms3-modifer.glb', (gltf) => {
+    this.gltfLoader.load('/ms-logo.glb', (gltf) => {
       const logo = gltf.scene.children.find(
         (mesh) => mesh.name === 'Curve'
       ) as Mesh
       const geometry = logo.geometry.clone()
       const material = new MeshPhysicalMaterial({
-        transmission: 0.99,
-        thickness: 0.5,
-        roughness: 0.7,
+        transmission: 0.499,
+        // thickness: 0.9,
+        // roughness: 0.9,
         envMap: hdrEquirect,
-        envMapIntensity: 0.1,
-        clearcoatNormalMap: normalMapTexture,
-        clearcoatRoughness: 19,
+        envMapIntensity: 0.2,
+        // clearcoatNormalMap: normalMapTexture,
+        // clearcoatNormalScale: new Vector2(1, 1),
+        clearcoat: 0.8,
+        clearcoatRoughness: 0.1,
+        transparent: true,
+        opacity: 0.1,
       })
 
       const mesh = new Mesh(geometry, material)
-      const scale = 19
+      const scale = 9
       mesh.position.set(0, 0, 0.2)
       mesh.scale.set(scale, scale, scale)
       mesh.rotation.set(Math.PI / 2, 0, 0)
       mesh.name = 'logo'
+      mesh.castShadow = true
+      mesh.receiveShadow = true
 
       this.add(mesh)
       this.logoObject = mesh
@@ -106,6 +109,6 @@ export default class SceneManager extends Scene {
   update() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    this.plane.material.uniforms.time.value += 0.0002
+    this.plane.material.uniforms.time.value += 0.0004
   }
 }

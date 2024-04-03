@@ -1,4 +1,9 @@
-import { Color, ColorRepresentation, PerspectiveCamera, WebGLRenderer } from 'three'
+import {
+  Color,
+  ColorRepresentation,
+  PerspectiveCamera,
+  WebGLRenderer,
+} from 'three'
 import { gsap } from 'gsap'
 import niceColors from 'nice-color-palettes'
 
@@ -10,16 +15,18 @@ type SetupPayload = {
 }
 
 // let index = Math.floor(Math.random() * niceColors.length | 0); // just to get a random color palette
-const index = 24 // 17
+const index = 3 // 17
+const pallet = niceColors[index]
+// const pallet = ['#DC8665', '#138086', '#FFFFFF', '#DC8665', '#EEB462']
 
-const palette = niceColors[index].map((color) => new Color(color as ColorRepresentation))
+const palette = pallet.map((color) => new Color(color as ColorRepresentation))
 
 export async function setup({ canvas }: SetupPayload) {
   const scene = new SceneManager({ palette })
   await scene.initialize()
 
   const mainCamera: PerspectiveCamera = new PerspectiveCamera(
-    45,
+    25,
     getDocumentWidth() / getDocumentHeight(),
     0.1,
     1000
@@ -31,7 +38,7 @@ export async function setup({ canvas }: SetupPayload) {
 
   renderer.setClearColor(new Color(0xffffff))
   renderer.setSize(getDocumentWidth(), getDocumentHeight())
-  renderer.setPixelRatio(3)
+  renderer.setPixelRatio(window.devicePixelRatio)
 
   canvas.addEventListener(
     'mousemove',

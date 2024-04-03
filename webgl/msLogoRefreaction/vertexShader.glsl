@@ -81,7 +81,7 @@ float snoise(vec3 v){
 }
 
 void main() {
-  vColor = uColor[4];
+  vColor = uColor[3];
   vec2 noiseCoords = uv*(vec2(5., 3));
 
   float noise = snoise(
@@ -119,7 +119,7 @@ void main() {
     float noiseFloor = 0.1;
     float noiseCeil = 0.6;
 
-    vec2 noiseFreq= vec2(-.2, .3);
+    vec2 noiseFreq= vec2(-.9, .9);
 
     float noise = smoothstep(
       noiseFloor,
