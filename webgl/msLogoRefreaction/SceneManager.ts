@@ -65,7 +65,7 @@ export default class SceneManager extends Scene {
   }
 
   async createLogo() {
-    const hdrEquirect = await this.RGBELoader.load(
+    const hdrEquirect = this.RGBELoader.load(
       'empty_warehouse_01_1k.hdr',
       () => {
         hdrEquirect.mapping = EquirectangularReflectionMapping
@@ -76,26 +76,23 @@ export default class SceneManager extends Scene {
     normalMapTexture.wrapS = RepeatWrapping
     normalMapTexture.wrapT = RepeatWrapping
 
-    await this.gltfLoader.load('/ms3-modifer.glb', (gltf) => {
+    this.gltfLoader.load('/ms3-modifer.glb', (gltf) => {
       const logo = gltf.scene.children.find(
         (mesh) => mesh.name === 'Curve'
       ) as Mesh
       const geometry = logo.geometry.clone()
       const material = new MeshPhysicalMaterial({
-        // metalness: 0,
-        transmission: 0.9,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        thickness: 1.5,
-        roughness: 0.07,
+        transmission: 0.99,
+        thickness: 0.5,
+        roughness: 0.7,
         envMap: hdrEquirect,
-        envMapIntensity: 0.9,
+        envMapIntensity: 0.1,
         clearcoatNormalMap: normalMapTexture,
         clearcoatRoughness: 19,
       })
 
       const mesh = new Mesh(geometry, material)
-      const scale = 12
+      const scale = 19
       mesh.position.set(0, 0, 0.2)
       mesh.scale.set(scale, scale, scale)
       mesh.rotation.set(Math.PI / 2, 0, 0)

@@ -26,6 +26,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "@react-three/eslint-plugin": "^0.1.1",
     "@types/node": "18.7.21",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",

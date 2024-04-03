@@ -1,13 +1,15 @@
 {
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "@react-three"],
   "extends": [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@react-three/recommended",
     "prettier"
   ],
   "rules": {
     // I suggest you add those two rules:
     "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-explicit-any": "error"
+    "@typescript-eslint/no-explicit-any": "error",
+    "react/no-unknown-property": ["off", { "ignore": ["JSX"] }]
   }
 }
