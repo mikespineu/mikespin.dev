@@ -1,20 +1,8 @@
-import {
-  CircleGeometry,
-  Color,
-  Mesh,
-  MeshBasicMaterial,
-  PlaneGeometry,
-  Scene,
-  ShaderMaterial,
-  Vector2,
-} from 'three'
-
-import fragmentShader from './fragmentShader.glsl'
-import vertexShader from './vertexShader.glsl'
+import { CircleGeometry, Color, Mesh, MeshBasicMaterial, Scene } from 'three'
 
 export default class SceneManager extends Scene {
   private planes: Mesh[] = []
-  constructor(){
+  constructor() {
     super()
     this.background = new Color(0x000000)
   }
@@ -36,9 +24,8 @@ export default class SceneManager extends Scene {
     this.planes.push(plane)
   }
   initialize() {
-    [
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0].forEach((_, i) => {
+    const array = new Array(20).fill(0)
+    array.forEach((_, i) => {
       this.createPlanes(i)
     })
   }
