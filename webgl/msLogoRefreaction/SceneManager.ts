@@ -89,11 +89,11 @@ export default class SceneManager extends Scene {
         clearcoat: 0.8,
         clearcoatRoughness: 0.1,
         transparent: true,
-        opacity: 0.1,
+        opacity: 0.15,
       })
 
       const mesh = new Mesh(geometry, material)
-      const scale = 9
+      const scale = 8
       mesh.position.set(0, 0, 0.2)
       mesh.scale.set(scale, scale, scale)
       mesh.rotation.set(Math.PI / 2, 0, 0)

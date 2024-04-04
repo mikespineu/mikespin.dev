@@ -113,11 +113,11 @@ void main() {
 
   for(int i = 0; i<4; i ++) {
     float iToFloated = float(i);
-    float noiseFlow = 5. + iToFloated * 0.3;
-    float noiseSpeed = 1. + iToFloated * 0.3;
-    float noiseSeed = 1. + iToFloated * 10.;
+    float noiseFlow = 2. + iToFloated * 0.3;
+    float noiseSpeed = iToFloated * 0.01;
+    float noiseSeed = 10. + iToFloated * 10.;
     float noiseFloor = 0.1;
-    float noiseCeil = 0.6;
+    float noiseCeil = 0.9;
 
     vec2 noiseFreq= vec2(-.9, .9);
 
