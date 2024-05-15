@@ -14,7 +14,6 @@ export default class SceneManager extends Scene {
     const material = new MeshBasicMaterial({
       color,
       transparent: true,
-      // opacity: 0.35
     })
     const plane = new Mesh(geometry, material)
     plane.position.set(0, 0, index / 40)

@@ -1,4 +1,6 @@
 uniform float uTime;
+uniform float uTextureRepeatX;
+uniform float uTextureRepeatY;
 varying vec2 vUv;
 
 void main() {

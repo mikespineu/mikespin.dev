@@ -29,9 +29,6 @@ export const AnimatedTexture: FC = () => {
         <h2 className="text-white text-lg sm:text-4xl lg:text-5xl">
           Animated Texture
         </h2>
-        {/*<button className="bg-transparent border-2 border-white text-white text-sm px-4 py-2 lg:px-6 lg:py-4 rounded-lg mt-4 lg:mt-10 width-auto self-start uppercase tracking-widest hover:translate-x-1 transition-transform">*/}
-        {/*  Change texture*/}
-        {/*</button>*/}
       </div>
     </>
   )
