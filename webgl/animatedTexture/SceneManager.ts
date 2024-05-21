@@ -32,7 +32,7 @@ export default class SceneManager extends Scene {
     const texture = new TextureLoader().load(imageBase64)
     texture.minFilter = NearestFilter
 
-    const geometry = new TorusKnotGeometry(10, 3, 600, 256)
+    const geometry = new TorusKnotGeometry(10, 2, 600, 256)
     const material: ShaderMaterial = new ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
