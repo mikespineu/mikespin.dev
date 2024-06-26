@@ -9,12 +9,12 @@ import { useControls } from 'leva'
 
 const R3F: NextPage = () => {
   const materialProps = useControls({
-    transmission: { value: 0.2, min: 0, max: 3, step: 0.01 },
+    transmission: { value: 0.9, min: 0, max: 3, step: 0.01 },
     thickness: { value: 0.2, min: 0, max: 1, step: 0.01 },
     roughness: { value: 0, min: 0, max: 1, step: 0.01 },
     backsideThickness: { value: 0.1, min: 0, max: 1, step: 0.01 },
-    chromaticAberration: { value: 0.5, min: 0, max: 200, step: 0.01 },
-    anisotropicBlur: { value: 0.5, min: 0, max: 200, step: 0.01 },
+    chromaticAberration: { value: 0.5, min: 0, max: 2, step: 0.01 },
+    anisotropicBlur: { value: 0.5, min: 0, max: 2, step: 0.01 },
     distortion: { value: 0.5, min: 0, max: 200, step: 0.01 },
     distortionScale: { value: 0.5, min: 0, max: 2, step: 0.01 },
     temporalDistortion: { value: 0.5, min: 0, max: 2, step: 0.01 },
