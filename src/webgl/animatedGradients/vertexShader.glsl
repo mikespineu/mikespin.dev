@@ -5,6 +5,9 @@ varying vec3 vPosition;
 uniform vec2 pixels;
 varying vec3 vColor;
 uniform vec3 uColor[5];
+uniform float scale;
+uniform float softness;
+uniform float relief;
 
 float PI = 3.14159265359;
 
@@ -82,7 +85,7 @@ float snoise(vec3 v){
 
 void main() {
   vColor = uColor[4];
-  vec2 noiseCoords = uv*(vec2(5., 3));
+  vec2 noiseCoords = uv*(vec2(5., 3))*scale;
 
   float noise = snoise(
     vec3(
@@ -117,7 +120,7 @@ void main() {
     float noiseSpeed = 1. + iToFloated * 0.3;
     float noiseSeed = 1. + iToFloated * 10.;
     float noiseFloor = 0.1;
-    float noiseCeil = 0.6;
+    float noiseCeil = noiseFloor + softness;
 
     vec2 noiseFreq= vec2(-.2, .3);
 
@@ -150,7 +153,7 @@ void main() {
   vec3 pos = vec3(
     position.x,
     position.y,
-    position.z + noise * 0.6 + tilt + incline + offset
+    position.z + noise * relief + tilt + incline + offset
   );
 
   vUv = uv;

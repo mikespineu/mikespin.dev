@@ -36,3 +36,7 @@ html {
     color: rgba(0, 0, 0, 0);
   }
 }
+
+[data-embed] .embed-hidden {
+  display: none;
+}

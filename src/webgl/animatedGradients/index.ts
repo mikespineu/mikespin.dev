@@ -15,8 +15,9 @@ const getRandomIndex = (pallates: number[]) =>
   Math.floor((Math.random() * pallates.length) | 0)
 
 const index = getRandomIndex(selectedPallates)
-const palette: Color[] = niceColors[index].map((color) => new Color(color))
+let palette: Color[] = niceColors[index].map((color) => new Color(color))
 let SceneManagerInstance: SceneManager
+let renderFrame: () => void
 
 export function setup({ canvas }: SetupPayload) {
   SceneManagerInstance = new SceneManager({ palette })
@@ -52,10 +53,51 @@ export function setup({ canvas }: SetupPayload) {
   }
 
   render()
+
+  renderFrame = () => renderer.render(SceneManagerInstance, mainCamera)
 }
 
-export function changeGradient() {
-  const newIndex = getRandomIndex(selectedPallates)
-  const palette: Color[] = niceColors[newIndex].map((color) => new Color(color))
+export function savePng(canvas: HTMLCanvasElement) {
+  // The drawing buffer is cleared after compositing, so draw right before reading it.
+  renderFrame()
+  canvas.toBlob((blob) => {
+    if (!blob) return
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'gradient.png'
+    link.click()
+    URL.revokeObjectURL(url)
+  }, 'image/png')
+}
+
+export function getPaletteHexes() {
+  return palette.map((color) => `#${color.getHexString()}`)
+}
+
+export function getRandomPaletteHexes() {
+  return niceColors[getRandomIndex(selectedPallates)]
+}
+
+export function setColors(hexes: string[]) {
+  palette = hexes.map((hex) => new Color(hex))
   SceneManagerInstance.setPalette(palette)
+}
+
+export function setShape(shape: {
+  speed: number
+  scale: number
+  softness: number
+  relief: number
+}) {
+  SceneManagerInstance.setShape(shape)
+}
+
+export function setGrain(grain: {
+  amount: number
+  mix: number
+  size: number
+  speed: number
+}) {
+  SceneManagerInstance.setGrain(grain)
 }

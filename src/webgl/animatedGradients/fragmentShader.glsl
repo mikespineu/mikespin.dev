@@ -5,11 +5,32 @@ uniform vec4 resolution;
 varying vec2 vUv;
 varying vec3 vPosition;
 uniform vec2 pixels;
+uniform float grainAmount;
+uniform float grainMix;
+uniform float grainSize;
+uniform float grainSeed;
 varying vec3 vColor;
+
+float hash(vec2 p) {
+  vec3 p3 = fract(vec3(p.xyx) * .1031);
+  p3 += dot(p3, p3.yzx + 33.33);
+  return fract((p3.x + p3.y) * p3.z);
+}
 
 void main(void)
     {
 //        gl_FragColor = vec4(vUv.x * cos(time), vUv.y * sin(time), 1.0 * -sin(time), 1.0);
         gl_FragColor = vec4(vColor, 1.0);
+        #include <colorspace_fragment>
+        vec2 grainCell = floor(gl_FragCoord.xy / grainSize);
+        float grain = hash(grainCell + grainSeed * 17.0) - 0.5;
+        float grainLayer = clamp(0.5 + grain * grainAmount * 10.0, 0.0, 1.0);
+        vec3 base = clamp(gl_FragColor.rgb, 0.0, 1.0);
+        vec3 overlay = mix(
+          2.0 * base * grainLayer,
+          1.0 - 2.0 * (1.0 - base) * (1.0 - grainLayer),
+          step(0.5, base)
+        );
+        gl_FragColor.rgb = mix(base, overlay, grainMix);
     }
 
