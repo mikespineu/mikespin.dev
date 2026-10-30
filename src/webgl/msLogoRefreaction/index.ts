@@ -5,7 +5,6 @@ import {
   WebGLRenderer,
 } from 'three'
 import { gsap } from 'gsap'
-import niceColors from 'nice-color-palettes'
 
 import { getDocumentHeight, getDocumentWidth } from '@/utils/viewport'
 
@@ -14,12 +13,14 @@ type SetupPayload = {
   canvas: HTMLCanvasElement
 }
 
-// let index = Math.floor(Math.random() * niceColors.length | 0); // just to get a random color palette
-const index = 3 // 17
-const pallet = niceColors[index]
-// const pallet = ['#DC8665', '#138086', '#FFFFFF', '#DC8665', '#EEB462']
+const pallet = ['#490a3d', '#bd1550', '#e97f02', '#f8ca00', '#8a9b0f']
 
 const palette = pallet.map((color) => new Color(color as ColorRepresentation))
+
+// Pulls the camera back on narrow screens so the logo keeps a side margin.
+function getCameraZ(aspect: number) {
+  return Math.max(2.3, 0.2 + 1.24 / aspect)
+}
 
 export async function setup({ canvas }: SetupPayload) {
   const scene = new SceneManager({ palette })
@@ -31,7 +32,7 @@ export async function setup({ canvas }: SetupPayload) {
     0.1,
     1000
   )
-  mainCamera.position.set(0, 0, 2.3)
+  mainCamera.position.set(0, 0, getCameraZ(mainCamera.aspect))
   const renderer: WebGLRenderer = new WebGLRenderer({ antialias: true, canvas })
   // const controls = new OrbitControls( mainCamera, renderer.domElement );
   // controls.update();
@@ -50,6 +51,7 @@ export async function setup({ canvas }: SetupPayload) {
 
   function onWindowResize() {
     mainCamera.aspect = getDocumentWidth() / getDocumentHeight()
+    mainCamera.position.z = getCameraZ(mainCamera.aspect)
     mainCamera.updateProjectionMatrix()
     renderer.setSize(getDocumentWidth(), getDocumentHeight())
   }
@@ -72,7 +74,7 @@ export async function setup({ canvas }: SetupPayload) {
   window.addEventListener('resize', onWindowResize)
 
   const render = function () {
-    renderer.render(scene, mainCamera)
+    scene.render(renderer, mainCamera)
     scene.update()
     requestAnimationFrame(render)
   }

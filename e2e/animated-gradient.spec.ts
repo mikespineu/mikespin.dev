@@ -62,3 +62,82 @@ test('animated-gradient renders and changes gradient', async ({ page }) => {
   expect(change).toBeGreaterThan(20)
   expect(change).toBeGreaterThan(drift * 3)
 })
+
+test('animated-gradient exposes colour and grain controls', async ({ page }) => {
+  const pageErrors: string[] = []
+  page.on('pageerror', (error) => pageErrors.push(error.message))
+
+  await expectCanvasRenders(page, '/exp/animated-gradient')
+  await expect(page.getByText('grain amount')).toBeVisible()
+  for (const name of [
+    'gradient speed',
+    'scale',
+    'softness',
+    'relief',
+    'grain speed',
+    'grain mix',
+  ]) {
+    await expect(page.getByText(name, { exact: true })).toBeVisible()
+  }
+
+  const canvas = page.locator('canvas').first()
+  const before = await meanColor(page, await canvas.screenshot())
+  for (const name of ['color1', 'color2', 'color3', 'color4', 'color5']) {
+    const input = page.locator(`input[id="${name}"]`)
+    await input.fill('#ff0000')
+    await input.press('Enter')
+  }
+  await page.waitForTimeout(500)
+  const after = await meanColor(page, await canvas.screenshot())
+
+  expect(pageErrors).toEqual([])
+  expect(after[0]).toBeGreaterThan(200)
+  expect(after[1]).toBeLessThan(40)
+  expect(distance(before, after)).toBeGreaterThan(20)
+})
+
+test('animated-gradient saves a PNG and round-trips values', async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+  const query =
+    'color1=%23112233&color2=%23223344&color3=%23334455&color4=%23445566&color5=%23556677' +
+    '&speed=2&scale=1.5&softness=0.8&relief=1&grainAmount=0.2&grainMix=0.7&grainSpeed=3&grainSize=2'
+
+  await page.goto(`/exp/animated-gradient?${query}`)
+  await expect(page.locator('input[id="color1"]')).toHaveValue('#112233')
+  await expect(page.locator('input[id="grainSpeed"]')).toHaveValue('3')
+
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByRole('button', { name: 'save PNG' }).click(),
+  ])
+  expect(download.suggestedFilename()).toBe('gradient.png')
+
+  await page.getByRole('button', { name: 'copy values' }).click()
+  await expect(page.getByRole('status')).toHaveText('Copied')
+  const copied = await page.evaluate(() => navigator.clipboard.readText())
+  expect(new URL(copied).search).toBe(`?${query}`)
+})
+
+test('animated-gradient embed shows only the background', async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+  await page.goto('/exp/animated-gradient?color1=%23112233')
+  await page.getByRole('button', { name: 'copy iframe' }).click()
+  await expect(page.getByRole('status')).toHaveText('Copied')
+  const snippet = await page.evaluate(() => navigator.clipboard.readText())
+  expect(snippet).toMatch(/^<iframe src=".*embed=1"/)
+
+  const src = snippet.match(/src="([^"]+)"/)?.[1].replaceAll('&amp;', '&')
+  await page.setContent(`<iframe src="${src}" width="800" height="500"></iframe>`)
+  const frame = page.frameLocator('iframe')
+  await expect(frame.locator('canvas').first()).toBeVisible()
+  await expect(frame.getByText('Animated Gradients')).toBeHidden()
+  await expect(frame.getByText('back')).toBeHidden()
+  await expect(frame.getByRole('button', { name: 'Change gradient' })).toBeHidden()
+  await expect(frame.getByText('grain amount')).toHaveCount(0)
+})
