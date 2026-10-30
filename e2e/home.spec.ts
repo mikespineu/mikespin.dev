@@ -48,6 +48,17 @@ for (const width of [390, 768, 1280, 1440]) {
   })
 }
 
+test('clicking the logo plays the jump without errors', async ({ page }) => {
+  const pageErrors: string[] = []
+  page.on('pageerror', (error) => pageErrors.push(error.message))
+
+  await page.goto('/')
+  await page.waitForTimeout(2000)
+  await page.locator('[data-logo-anchor]').click()
+  await page.waitForTimeout(1500)
+  expect(pageErrors).toEqual([])
+})
+
 test('home offers the CV as a download', async ({ page, request }) => {
   await page.goto('/')
   const link = page.getByRole('link', { name: 'Download CV' })
