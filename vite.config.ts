@@ -12,6 +12,7 @@ const paths = [
   '/exp/animated-texture',
   '/exp/planes',
   '/exp/reaction-diffusion',
+  '/exp/grain-mirror',
 ]
 
 const config = defineConfig({

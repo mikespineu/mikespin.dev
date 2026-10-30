@@ -7,6 +7,7 @@ const experiments = [
   'animated-texture',
   'planes',
   'reaction-diffusion',
+  'grain-mirror',
 ]
 
 test('prerenders every route', () => {
