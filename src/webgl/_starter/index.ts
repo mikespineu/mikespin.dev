@@ -1,11 +1,11 @@
 import { Color, PerspectiveCamera, WebGLRenderer } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-import { getDocumentHeight, getDocumentWidth } from '@/utils/utils.client'
+import { getDocumentHeight, getDocumentWidth } from '@/utils/viewport'
 
 import SceneManager from './SceneManager'
-import fragmentShader from './fragmentShader.glsl'
-import vertexShader from './vertexShader.glsl'
+import fragmentShader from './fragmentShader.glsl?raw'
+import vertexShader from './vertexShader.glsl?raw'
 
 type SetupPayload = {
   canvas: HTMLCanvasElement

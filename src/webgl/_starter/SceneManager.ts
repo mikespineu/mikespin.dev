@@ -1,10 +1,8 @@
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import fragmentShader from './fragmentShader.glsl'
-import vertexShader from './vertexShader.glsl'
+import fragmentShader from './fragmentShader.glsl?raw'
+import vertexShader from './vertexShader.glsl?raw'
 
 export default class SceneManager extends THREE.Scene {
-  private readonly gltfLoader = new GLTFLoader()
   initialize() {
     // const light = new THREE.AmbientLight( 0x404040 ); // soft white light
     // this.add( light );
