@@ -1,9 +1,11 @@
 import { defineConfig } from '@playwright/test'
 
+const port = Number(process.env.E2E_PORT) || 4173
+
 export default defineConfig({
   testDir: './e2e',
   use: {
-    baseURL: 'http://localhost:4173',
+    baseURL: `http://localhost:${port}`,
     viewport: { width: 1280, height: 800 },
     launchOptions: {
       args: [
@@ -14,8 +16,8 @@ export default defineConfig({
     },
   },
   webServer: {
-    command: 'npx serve dist/client -l 4173',
-    url: 'http://localhost:4173',
+    command: `npx serve dist/client -l ${port}`,
+    url: `http://localhost:${port}`,
     reuseExistingServer: false,
   },
 })
