@@ -60,13 +60,14 @@ html {
 .hover-sweep {
   background-image: linear-gradient(#fff, #fff);
   background-size: 0 100%;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .hover-sweep-ink {
   background-image: linear-gradient(#000, #000);
 }
 
-.hover-sweep:hover,
 .hover-sweep:focus-visible {
   background-size: 100% 100%;
 }
@@ -76,9 +77,19 @@ html {
   background-size: 0 1px;
 }
 
-.hover-underline:hover,
 .hover-underline:focus-visible {
   background-size: 100% 1px;
+}
+
+/* Touch keeps :hover after a tap, while Tailwind's hover: text colours stay off. */
+@media (hover: hover) {
+  .hover-sweep:hover {
+    background-size: 100% 100%;
+  }
+
+  .hover-underline:hover {
+    background-size: 100% 1px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
