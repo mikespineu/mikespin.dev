@@ -11,6 +11,7 @@ const paths = [
   '/exp/animated-gradient',
   '/exp/animated-texture',
   '/exp/planes',
+  '/exp/reaction-diffusion',
 ]
 
 const config = defineConfig({
