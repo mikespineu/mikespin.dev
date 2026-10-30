@@ -7,6 +7,8 @@ const IGNORED_RESPONSE_HOSTS = ['fonts.cdnfonts.com']
 export async function expectCanvasRenders(page: Page, path: string) {
   const pageErrors: string[] = []
   const failedResponses: string[] = []
+  const failedRequests: string[] = []
+  const consoleErrors: string[] = []
 
   page.on('pageerror', (error) => pageErrors.push(error.message))
   page.on('response', (response) => {
@@ -16,6 +18,16 @@ export async function expectCanvasRenders(page: Page, path: string) {
     }
   })
 
+  page.on('requestfailed', (request) => {
+    const { hostname } = new URL(request.url())
+    if (!IGNORED_RESPONSE_HOSTS.includes(hostname)) {
+      failedRequests.push(`${request.failure()?.errorText} ${request.url()}`)
+    }
+  })
+  page.on('console', (message) => {
+    if (message.type() === 'error') consoleErrors.push(message.text())
+  })
+
   await page.goto(path)
 
   await page.waitForTimeout(3000)
@@ -23,6 +35,8 @@ export async function expectCanvasRenders(page: Page, path: string) {
   // Report real page errors first; they are the usual cause of a blank canvas.
   expect(pageErrors).toEqual([])
   expect(failedResponses).toEqual([])
+  expect(failedRequests).toEqual([])
+  expect(consoleErrors).toEqual([])
 
   const canvas = page.locator('canvas').filter({ visible: true }).first()
   await expect(canvas).toBeVisible()

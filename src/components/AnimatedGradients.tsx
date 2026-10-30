@@ -35,7 +35,7 @@ export const AnimatedGradients: FC = () => {
                     Animated Gradients
                 </h2>
                 <button 
-                    className="bg-transparent border-2 border-black text-black text-sm px-4 py-2 lg:px-6 lg:py-4 rounded-lg mt-4 lg:mt-10 width-auto self-start uppercase tracking-widest hover:translate-x-1 transition-transform"
+                    className="cursor-pointer bg-transparent border-2 border-black text-black text-sm px-4 py-2 lg:px-6 lg:py-4 rounded-lg mt-4 lg:mt-10 width-auto self-start uppercase tracking-widest hover:translate-x-1 transition-transform"
                     onClick={() => handleClick()}
                 >
                     Change gradient
