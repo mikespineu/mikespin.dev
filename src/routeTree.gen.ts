@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExpAnimatedGradientRouteImport } from './routes/exp/animated-gradient'
+import { Route as ExpAnimatedTextureRouteImport } from './routes/exp/animated-texture'
+import { Route as ExpPlanesRouteImport } from './routes/exp/planes'
+import { Route as ExpReactThreeFiberRouteImport } from './routes/exp/react-three-fiber'
+import { Route as ExpRevealRouteImport } from './routes/exp/reveal'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExpAnimatedGradientRoute = ExpAnimatedGradientRouteImport.update({
+  id: '/exp/animated-gradient',
+  path: '/exp/animated-gradient',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpAnimatedTextureRoute = ExpAnimatedTextureRouteImport.update({
+  id: '/exp/animated-texture',
+  path: '/exp/animated-texture',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpPlanesRoute = ExpPlanesRouteImport.update({
+  id: '/exp/planes',
+  path: '/exp/planes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpReactThreeFiberRoute = ExpReactThreeFiberRouteImport.update({
+  id: '/exp/react-three-fiber',
+  path: '/exp/react-three-fiber',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpRevealRoute = ExpRevealRouteImport.update({
+  id: '/exp/reveal',
+  path: '/exp/reveal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/exp/animated-gradient': typeof ExpAnimatedGradientRoute
+  '/exp/animated-texture': typeof ExpAnimatedTextureRoute
+  '/exp/planes': typeof ExpPlanesRoute
+  '/exp/react-three-fiber': typeof ExpReactThreeFiberRoute
+  '/exp/reveal': typeof ExpRevealRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/exp/animated-gradient': typeof ExpAnimatedGradientRoute
+  '/exp/animated-texture': typeof ExpAnimatedTextureRoute
+  '/exp/planes': typeof ExpPlanesRoute
+  '/exp/react-three-fiber': typeof ExpReactThreeFiberRoute
+  '/exp/reveal': typeof ExpRevealRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/exp/animated-gradient': typeof ExpAnimatedGradientRoute
+  '/exp/animated-texture': typeof ExpAnimatedTextureRoute
+  '/exp/planes': typeof ExpPlanesRoute
+  '/exp/react-three-fiber': typeof ExpReactThreeFiberRoute
+  '/exp/reveal': typeof ExpRevealRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/exp/animated-gradient'
+    | '/exp/animated-texture'
+    | '/exp/planes'
+    | '/exp/react-three-fiber'
+    | '/exp/reveal'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/exp/animated-gradient'
+    | '/exp/animated-texture'
+    | '/exp/planes'
+    | '/exp/react-three-fiber'
+    | '/exp/reveal'
+  id:
+    | '__root__'
+    | '/'
+    | '/exp/animated-gradient'
+    | '/exp/animated-texture'
+    | '/exp/planes'
+    | '/exp/react-three-fiber'
+    | '/exp/reveal'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExpAnimatedGradientRoute: typeof ExpAnimatedGradientRoute
+  ExpAnimatedTextureRoute: typeof ExpAnimatedTextureRoute
+  ExpPlanesRoute: typeof ExpPlanesRoute
+  ExpReactThreeFiberRoute: typeof ExpReactThreeFiberRoute
+  ExpRevealRoute: typeof ExpRevealRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +117,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exp/animated-gradient': {
+      id: '/exp/animated-gradient'
+      path: '/exp/animated-gradient'
+      fullPath: '/exp/animated-gradient'
+      preLoaderRoute: typeof ExpAnimatedGradientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exp/animated-texture': {
+      id: '/exp/animated-texture'
+      path: '/exp/animated-texture'
+      fullPath: '/exp/animated-texture'
+      preLoaderRoute: typeof ExpAnimatedTextureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exp/planes': {
+      id: '/exp/planes'
+      path: '/exp/planes'
+      fullPath: '/exp/planes'
+      preLoaderRoute: typeof ExpPlanesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exp/react-three-fiber': {
+      id: '/exp/react-three-fiber'
+      path: '/exp/react-three-fiber'
+      fullPath: '/exp/react-three-fiber'
+      preLoaderRoute: typeof ExpReactThreeFiberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exp/reveal': {
+      id: '/exp/reveal'
+      path: '/exp/reveal'
+      fullPath: '/exp/reveal'
+      preLoaderRoute: typeof ExpRevealRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExpAnimatedGradientRoute: ExpAnimatedGradientRoute,
+  ExpAnimatedTextureRoute: ExpAnimatedTextureRoute,
+  ExpPlanesRoute: ExpPlanesRoute,
+  ExpReactThreeFiberRoute: ExpReactThreeFiberRoute,
+  ExpRevealRoute: ExpRevealRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
