@@ -2,9 +2,26 @@ import { useRef } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { MsLogoRefraction } from '@/components/MsLogoRefraction'
 
+const siteUrl = 'https://mikespin.dev'
+const siteTitle = 'Michał Kręcisz — Product Engineer / Software Engineer'
+const siteDescription =
+  'Michał Kręcisz, aka Mikespin, is a product and software engineer. Portfolio in progress: download the CV or explore the WebGL lab.'
+
 export const Route = createFileRoute('/')({
   head: () => ({
-    meta: [{ title: 'Michał Kręcisz — Product Engineer / Software Engineer' }],
+    meta: [
+      { title: siteTitle },
+      { name: 'description', content: siteDescription },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: siteTitle },
+      { property: 'og:description', content: siteDescription },
+      { property: 'og:url', content: siteUrl },
+      { property: 'og:image', content: `${siteUrl}/og-image.png` },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+    ],
+    links: [{ rel: 'canonical', href: siteUrl }],
   }),
   component: Home,
 })
