@@ -1,0 +1,66 @@
+import { expect } from '@playwright/test'
+import type { Page } from '@playwright/test'
+
+// The baseline README records no existing errors, so nothing else is ignored.
+const IGNORED_RESPONSE_HOSTS = ['fonts.cdnfonts.com']
+
+export async function expectCanvasRenders(page: Page, path: string) {
+  const pageErrors: string[] = []
+  const failedResponses: string[] = []
+  const failedRequests: string[] = []
+  const consoleErrors: string[] = []
+
+  page.on('pageerror', (error) => pageErrors.push(error.message))
+  page.on('response', (response) => {
+    const { hostname } = new URL(response.url())
+    if (response.status() >= 400 && !IGNORED_RESPONSE_HOSTS.includes(hostname)) {
+      failedResponses.push(`${response.status()} ${response.url()}`)
+    }
+  })
+
+  page.on('requestfailed', (request) => {
+    const { hostname } = new URL(request.url())
+    if (!IGNORED_RESPONSE_HOSTS.includes(hostname)) {
+      failedRequests.push(`${request.failure()?.errorText} ${request.url()}`)
+    }
+  })
+  page.on('console', (message) => {
+    if (message.type() === 'error') consoleErrors.push(message.text())
+  })
+
+  await page.goto(path)
+
+  await page.waitForTimeout(3000)
+
+  // Report real page errors first; they are the usual cause of a blank canvas.
+  expect(pageErrors).toEqual([])
+  expect(failedResponses).toEqual([])
+  expect(failedRequests).toEqual([])
+  expect(consoleErrors).toEqual([])
+
+  const canvas = page.locator('canvas').filter({ visible: true }).first()
+  await expect(canvas).toBeVisible()
+  await canvas.scrollIntoViewIfNeeded()
+
+  const box = await canvas.boundingBox()
+  expect(box?.width).toBeGreaterThan(0)
+  expect(box?.height).toBeGreaterThan(0)
+
+  const screenshot = await canvas.screenshot()
+  expect(await countColors(page, screenshot)).toBeGreaterThan(1)
+}
+
+// Checks every pixel, so a small mark on a flat background still counts.
+async function countColors(page: Page, png: Buffer) {
+  return page.evaluate(async (base64) => {
+    const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0))
+    const bitmap = await createImageBitmap(new Blob([bytes]))
+    const surface = new OffscreenCanvas(bitmap.width, bitmap.height)
+    const context = surface.getContext('2d', { willReadFrequently: true })
+    if (!context) throw new Error('2d context unavailable')
+    context.drawImage(bitmap, 0, 0)
+    const { data } = context.getImageData(0, 0, bitmap.width, bitmap.height)
+    const pixels = new Uint32Array(data.buffer)
+    return new Set(pixels).size
+  }, png.toString('base64'))
+}

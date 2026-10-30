@@ -43,6 +43,7 @@ next-env.d.ts
 .DS_Store
 .AppleDouble
 .LSOverride
+Close
 
 # Icon must end with two \r
 Icon
@@ -197,3 +198,22 @@ fabric.properties
 /.idea/codeStyles/codeStyleConfig.xml
 /.idea/prettier.xml
 /.idea/codeStyles/Project.xml
+
+# TanStack Start / Vite
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json
+
+# testing and worktrees
+test-results
+playwright-report
+.worktrees
