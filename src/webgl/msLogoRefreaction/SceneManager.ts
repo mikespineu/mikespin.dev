@@ -26,12 +26,15 @@ import logoVertexShader from './logoVertexShader.glsl?raw'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
 
+const LOGO_DEPTH = 0.2
+
 export default class SceneManager extends Scene {
   private readonly gltfLoader = new GLTFLoader()
   private readonly hdrLoader = new HDRLoader()
   private readonly TextureLoader = new TextureLoader()
   private plane = {} as Mesh
   private logoObject = {} as Mesh
+  private logoExtent = 1
   private readonly sceneTarget = new WebGLRenderTarget(1, 1, {
     type: HalfFloatType,
   })
@@ -84,6 +87,17 @@ export default class SceneManager extends Scene {
     return this.logoObject
   }
 
+  getLogoDepth() {
+    return LOGO_DEPTH
+  }
+
+  // Centres the logo on a world point and fits its longer side to `size`.
+  fitLogo(x: number, y: number, size: number) {
+    if (!this.logoObject.isMesh) return
+    this.logoObject.position.set(x, y, LOGO_DEPTH)
+    this.logoObject.scale.setScalar(size / this.logoExtent)
+  }
+
   async createLogo() {
     const hdrEquirect = this.hdrLoader.load(
       '/empty_warehouse_01_1k.hdr',
@@ -105,6 +119,8 @@ export default class SceneManager extends Scene {
       geometry.computeBoundingBox()
       const center = geometry.boundingBox!.getCenter(new Vector3())
       geometry.translate(-center.x, 0, -center.z)
+      const extent = geometry.boundingBox!.getSize(new Vector3())
+      this.logoExtent = Math.max(extent.x, extent.z)
       const material = new ShaderMaterial({
         uniforms: {
           uScene: { value: this.sceneTarget.texture },
@@ -136,7 +152,7 @@ export default class SceneManager extends Scene {
 
       const mesh = new Mesh(geometry, material)
       const scale = 8
-      mesh.position.set(0, 0, 0.2)
+      mesh.position.set(0, 0, LOGO_DEPTH)
       mesh.scale.set(scale, scale, scale)
       mesh.rotation.set(Math.PI / 2, 0, 0)
       mesh.name = 'logo'

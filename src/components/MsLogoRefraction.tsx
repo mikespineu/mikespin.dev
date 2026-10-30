@@ -1,8 +1,8 @@
-import {useEffect, useRef} from "react";
+import {type RefObject, useEffect, useRef} from "react";
 import { setup as setupAnimatedGradients} from "../webgl/msLogoRefreaction";
 
 export const MsLogoRefraction = (
-    { className }:{className?: string}
+    { className, anchorRef }:{className?: string, anchorRef: RefObject<HTMLElement | null>}
 ) => {
     const canvas = useRef<HTMLCanvasElement>(null);
     const effectRan = useRef(false);
@@ -12,15 +12,16 @@ export const MsLogoRefraction = (
             (async () => {
                 await setupAnimatedGradients({
                     canvas: canvas.current as HTMLCanvasElement,
+                    anchor: anchorRef.current as HTMLElement,
                 })
             })();
         }
         return () => {
             effectRan.current = true;
         }
-    }, [effectRan])
+    }, [effectRan, anchorRef])
 
     return (
-        <canvas id="canvas"  className={className} ref={canvas} />
+        <canvas id="canvas" aria-hidden="true" className={className} ref={canvas} />
     )
 }
