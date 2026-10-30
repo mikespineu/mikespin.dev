@@ -1,6 +1,7 @@
 import {
   Color,
   type ColorRepresentation,
+  MathUtils,
   PerspectiveCamera,
   WebGLRenderer,
 } from 'three'
@@ -11,6 +12,7 @@ import { getDocumentHeight, getDocumentWidth } from '@/utils/viewport'
 import SceneManager from './SceneManager'
 type SetupPayload = {
   canvas: HTMLCanvasElement
+  anchor: HTMLElement
 }
 
 const pallet = ['#490a3d', '#bd1550', '#e97f02', '#f8ca00', '#8a9b0f']
@@ -22,7 +24,7 @@ function getCameraZ(aspect: number) {
   return Math.max(2.3, 0.2 + 1.24 / aspect)
 }
 
-export async function setup({ canvas }: SetupPayload) {
+export async function setup({ canvas, anchor }: SetupPayload) {
   const scene = new SceneManager({ palette })
   await scene.initialize()
 
@@ -41,7 +43,8 @@ export async function setup({ canvas }: SetupPayload) {
   renderer.setSize(getDocumentWidth(), getDocumentHeight())
   renderer.setPixelRatio(window.devicePixelRatio)
 
-  canvas.addEventListener(
+  // On window because the HTML layer above the canvas takes the pointer events.
+  window.addEventListener(
     'mousemove',
     (e) => {
       setupRotation(e)
@@ -73,8 +76,29 @@ export async function setup({ canvas }: SetupPayload) {
 
   window.addEventListener('resize', onWindowResize)
 
+  // Read every frame so the logo follows resizes, scrolling and late font swaps.
+  function fitLogoToAnchor() {
+    const canvasRect = canvas.getBoundingClientRect()
+    const anchorRect = anchor.getBoundingClientRect()
+    const distance = mainCamera.position.z - scene.getLogoDepth()
+    const visibleHeight =
+      2 * distance * Math.tan(MathUtils.degToRad(mainCamera.fov / 2))
+    const worldPerPixel = visibleHeight / canvasRect.height
+    const centerX = anchorRect.left + anchorRect.width / 2 - canvasRect.left
+    const centerY = anchorRect.top + anchorRect.height / 2 - canvasRect.top
+
+    scene.fitLogo(
+      (centerX - canvasRect.width / 2) * worldPerPixel,
+      (canvasRect.height / 2 - centerY) * worldPerPixel,
+      anchorRect.width * worldPerPixel
+    )
+  }
+
   const render = function () {
+    fitLogoToAnchor()
     scene.render(renderer, mainCamera)
+    // Wait for the logo so the background and logo fade in as one.
+    if (scene.getLogo().isMesh) canvas.style.opacity = '1'
     scene.update()
     requestAnimationFrame(render)
   }

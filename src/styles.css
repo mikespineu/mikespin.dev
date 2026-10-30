@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@400;500&family=Red+Hat+Text:wght@400&display=swap');
 @import url('https://fonts.cdnfonts.com/css/monument-extended');
 
 @import "tailwindcss";
@@ -34,6 +35,52 @@ html {
   .font-outline-white {
     -webkit-text-stroke: 2px white;
     color: rgba(0, 0, 0, 0);
+  }
+}
+
+/* Unlayered, so they beat the global `*` font rule above. */
+.font-title {
+  font-family: 'Red Hat Mono', monospace;
+}
+
+.font-body {
+  font-family: 'Red Hat Text', sans-serif;
+}
+
+/* Background fills grow from the left, so both effects share one mechanism. */
+.hover-sweep,
+.hover-underline {
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition:
+    background-size 0.3s ease,
+    color 0.3s ease;
+}
+
+.hover-sweep {
+  background-image: linear-gradient(#fff, #fff);
+  background-size: 0 100%;
+}
+
+.hover-sweep:hover,
+.hover-sweep:focus-visible {
+  background-size: 100% 100%;
+}
+
+.hover-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0 1px;
+}
+
+.hover-underline:hover,
+.hover-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-sweep,
+  .hover-underline {
+    transition: none;
   }
 }
 
