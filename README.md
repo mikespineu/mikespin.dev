@@ -13,7 +13,19 @@ npm run build      # production build
 npm run preview    # preview production build
 npm run typecheck  # tsc --noEmit
 npm run test       # Vitest
+npm run test:e2e   # build + Playwright e2e
 ```
+
+## Routes
+
+- `/` – home (logo refraction)
+- `/exp/animated-gradient`
+- `/exp/animated-texture`
+- `/exp/planes`
+- `/exp/react-three-fiber`
+- `/exp/reveal`
+
+All routes are prerendered at build time.
 
 ## Layout
 
