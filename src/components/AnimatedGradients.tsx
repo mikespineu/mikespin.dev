@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import type { FC } from "react";
 import { Leva, button, useControls } from "leva";
 import {
@@ -10,55 +10,58 @@ import {
     setShape,
     setup as setupAnimatedGradients,
 } from "../webgl/animatedGradients";
-import { readValues, toSearch, valueKeys } from "../webgl/animatedGradients/values";
+import { useShareLink } from "../hooks/useShareLink";
 
-const getShareUrl = (get: (key: string) => string | number) => {
-    const values = Object.fromEntries(valueKeys.map((key) => [key, get(key)]));
-    return `${window.location.origin}${window.location.pathname}?${toSearch(values)}`;
-}
+const [color1, color2, color3, color4, color5] = getPaletteHexes();
+const DEFAULTS = {
+    color1,
+    color2,
+    color3,
+    color4,
+    color5,
+    speed: 1,
+    scale: 1,
+    softness: 0.5,
+    relief: 0.6,
+    grainAmount: 0.1,
+    grainMix: 0.4,
+    grainSpeed: 6,
+    grainSize: 1,
+};
 
 export const AnimatedGradients: FC = () => {
     const canvas = useRef<HTMLCanvasElement>(null);
     const effectRan = useRef(false);
-    const [copyStatus, setCopyStatus] = useState("");
+    const { initial, getLink, copy, copyLink, status } = useShareLink(DEFAULTS);
+    // Buttons never rebuild, so they read the latest values through this ref.
+    const latest = useRef<Record<string, unknown>>(initial);
 
     const embed = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("embed");
 
-    const copy = (text: string) => {
-        navigator.clipboard.writeText(text).then(
-            () => setCopyStatus("Copied"),
-            () => setCopyStatus("Copy failed")
-        );
-    }
-
     const [controls, setControls] = useControls(() => {
-        const [color1, color2, color3, color4, color5] = getPaletteHexes();
-        const { colors, numbers } = readValues(
-            typeof window === "undefined" ? "" : window.location.search
-        );
         return {
-            color1,
-            color2,
-            color3,
-            color4,
-            color5,
-            ...colors,
-            speed: { value: numbers.speed, min: 0, max: 5, step: 0.1, label: "gradient speed" },
-            scale: { value: numbers.scale, min: 0.2, max: 4, step: 0.1 },
-            softness: { value: numbers.softness, min: 0.05, max: 1.5, step: 0.05 },
-            relief: { value: numbers.relief, min: 0, max: 2, step: 0.05 },
-            grainAmount: { value: numbers.grainAmount, min: 0, max: 0.5, step: 0.01, label: "grain amount" },
-            grainMix: { value: numbers.grainMix, min: 0, max: 1, step: 0.01, label: "grain mix" },
-            grainSpeed: { value: numbers.grainSpeed, min: 0, max: 30, step: 1, label: "grain speed" },
-            grainSize: { value: numbers.grainSize, min: 1, max: 6, step: 1, label: "grain size" },
+            color1: initial.color1,
+            color2: initial.color2,
+            color3: initial.color3,
+            color4: initial.color4,
+            color5: initial.color5,
+            speed: { value: initial.speed, min: 0, max: 5, step: 0.1, label: "gradient speed" },
+            scale: { value: initial.scale, min: 0.2, max: 4, step: 0.1 },
+            softness: { value: initial.softness, min: 0.05, max: 1.5, step: 0.05 },
+            relief: { value: initial.relief, min: 0, max: 2, step: 0.05 },
+            grainAmount: { value: initial.grainAmount, min: 0, max: 0.5, step: 0.01, label: "grain amount" },
+            grainMix: { value: initial.grainMix, min: 0, max: 1, step: 0.01, label: "grain mix" },
+            grainSpeed: { value: initial.grainSpeed, min: 0, max: 30, step: 1, label: "grain speed" },
+            grainSize: { value: initial.grainSize, min: 1, max: 6, step: 1, label: "grain size" },
             "save PNG": button(() => savePng(canvas.current as HTMLCanvasElement)),
-            "copy values": button((get) => copy(getShareUrl(get))),
-            "copy iframe": button((get) => {
-                const src = `${getShareUrl(get)}&embed=1`.replaceAll("&", "&amp;");
+            "copy values": button(() => copyLink(latest.current)),
+            "copy iframe": button(() => {
+                const src = `${getLink(latest.current)}&embed=1`.replaceAll("&", "&amp;");
                 copy(`<iframe src="${src}" width="100%" height="100%" style="border:0" title="Animated gradient"></iframe>`);
             }),
         };
     });
+    latest.current = controls;
 
     const handleClick = () => {
         const [color1, color2, color3, color4, color5] = getRandomPaletteHexes();
@@ -88,7 +91,7 @@ export const AnimatedGradients: FC = () => {
             {embed && <Leva hidden />}
             <canvas id="canvas"  ref={canvas} />
             <span role="status" className="embed-hidden fixed bottom-4 right-4 text-sm text-white">
-                {copyStatus}
+                {status}
             </span>
             <div className="embed-hidden absolute top-[50%] translate-y-[-50%] left-[50px] sm:left-[100px] lg:left-[250px] text-left flex flex-col opacity-75 mix-blend-overlay select-none">
                 <h1 className="text-5xl sm:text-7xl lg:text-9xl tracking-widest font-outline-black relative z-10">

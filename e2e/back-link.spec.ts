@@ -5,6 +5,7 @@ for (const name of [
   'animated-texture',
   'planes',
   'reaction-diffusion',
+  'grain-mirror',
 ]) {
   test(`${name} back link returns home`, async ({ page }) => {
     await page.goto(`/exp/${name}`)

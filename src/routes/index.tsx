@@ -31,6 +31,7 @@ const experiments = [
   { to: '/exp/animated-texture', label: 'Animated texture' },
   { to: '/exp/planes', label: 'Planes' },
   { to: '/exp/reaction-diffusion', label: 'Reaction–diffusion' },
+  { to: '/exp/grain-mirror', label: 'Grain mirror' },
 ] as const
 
 const linkClassName =

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExpAnimatedGradientRouteImport } from './routes/exp/animated-gradient'
 import { Route as ExpAnimatedTextureRouteImport } from './routes/exp/animated-texture'
+import { Route as ExpGrainMirrorRouteImport } from './routes/exp/grain-mirror'
 import { Route as ExpPlanesRouteImport } from './routes/exp/planes'
 import { Route as ExpReactionDiffusionRouteImport } from './routes/exp/reaction-diffusion'
 
@@ -30,6 +31,11 @@ const ExpAnimatedTextureRoute = ExpAnimatedTextureRouteImport.update({
   path: '/exp/animated-texture',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExpGrainMirrorRoute = ExpGrainMirrorRouteImport.update({
+  id: '/exp/grain-mirror',
+  path: '/exp/grain-mirror',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExpPlanesRoute = ExpPlanesRouteImport.update({
   id: '/exp/planes',
   path: '/exp/planes',
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/exp/animated-gradient': typeof ExpAnimatedGradientRoute
   '/exp/animated-texture': typeof ExpAnimatedTextureRoute
+  '/exp/grain-mirror': typeof ExpGrainMirrorRoute
   '/exp/planes': typeof ExpPlanesRoute
   '/exp/reaction-diffusion': typeof ExpReactionDiffusionRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/exp/animated-gradient': typeof ExpAnimatedGradientRoute
   '/exp/animated-texture': typeof ExpAnimatedTextureRoute
+  '/exp/grain-mirror': typeof ExpGrainMirrorRoute
   '/exp/planes': typeof ExpPlanesRoute
   '/exp/reaction-diffusion': typeof ExpReactionDiffusionRoute
 }
@@ -60,6 +68,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/exp/animated-gradient': typeof ExpAnimatedGradientRoute
   '/exp/animated-texture': typeof ExpAnimatedTextureRoute
+  '/exp/grain-mirror': typeof ExpGrainMirrorRoute
   '/exp/planes': typeof ExpPlanesRoute
   '/exp/reaction-diffusion': typeof ExpReactionDiffusionRoute
 }
@@ -69,6 +78,7 @@ export interface FileRouteTypes {
     | '/'
     | '/exp/animated-gradient'
     | '/exp/animated-texture'
+    | '/exp/grain-mirror'
     | '/exp/planes'
     | '/exp/reaction-diffusion'
   fileRoutesByTo: FileRoutesByTo
@@ -76,6 +86,7 @@ export interface FileRouteTypes {
     | '/'
     | '/exp/animated-gradient'
     | '/exp/animated-texture'
+    | '/exp/grain-mirror'
     | '/exp/planes'
     | '/exp/reaction-diffusion'
   id:
@@ -83,6 +94,7 @@ export interface FileRouteTypes {
     | '/'
     | '/exp/animated-gradient'
     | '/exp/animated-texture'
+    | '/exp/grain-mirror'
     | '/exp/planes'
     | '/exp/reaction-diffusion'
   fileRoutesById: FileRoutesById
@@ -91,6 +103,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ExpAnimatedGradientRoute: typeof ExpAnimatedGradientRoute
   ExpAnimatedTextureRoute: typeof ExpAnimatedTextureRoute
+  ExpGrainMirrorRoute: typeof ExpGrainMirrorRoute
   ExpPlanesRoute: typeof ExpPlanesRoute
   ExpReactionDiffusionRoute: typeof ExpReactionDiffusionRoute
 }
@@ -118,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExpAnimatedTextureRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exp/grain-mirror': {
+      id: '/exp/grain-mirror'
+      path: '/exp/grain-mirror'
+      fullPath: '/exp/grain-mirror'
+      preLoaderRoute: typeof ExpGrainMirrorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/exp/planes': {
       id: '/exp/planes'
       path: '/exp/planes'
@@ -139,6 +159,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ExpAnimatedGradientRoute: ExpAnimatedGradientRoute,
   ExpAnimatedTextureRoute: ExpAnimatedTextureRoute,
+  ExpGrainMirrorRoute: ExpGrainMirrorRoute,
   ExpPlanesRoute: ExpPlanesRoute,
   ExpReactionDiffusionRoute: ExpReactionDiffusionRoute,
 }
