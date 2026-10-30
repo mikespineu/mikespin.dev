@@ -119,6 +119,59 @@ html {
   }
 }
 
+/* Parked off-screen; only its view transition snapshot is ever seen. */
+.page-wipe {
+  position: fixed;
+  top: 0;
+  left: -32vw;
+  z-index: 1;
+  width: 32vw;
+  height: 100vh;
+  /* A wider black bar trailing a white one, 20vw and 12vw. */
+  background: linear-gradient(90deg, #000 62.5%, #fff 62.5%);
+  pointer-events: none;
+  view-transition-name: page-wipe;
+}
+
+::view-transition-old(root) {
+  animation: none;
+}
+
+/* The reveal edge tracks the black bar's centre, so it hides the seam. */
+::view-transition-new(root) {
+  animation: page-wipe-reveal 0.9s cubic-bezier(0.76, 0, 0.24, 1) both;
+  mix-blend-mode: normal;
+}
+
+::view-transition-group(page-wipe) {
+  animation: page-wipe-bar 0.9s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+@keyframes page-wipe-reveal {
+  from {
+    clip-path: inset(0 122vw 0 0);
+  }
+  to {
+    clip-path: inset(0 -10vw 0 0);
+  }
+}
+
+@keyframes page-wipe-bar {
+  from {
+    transform: translateX(-32vw);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root),
+  ::view-transition-group(page-wipe) {
+    animation: none;
+  }
+}
+
 [data-embed] .embed-hidden {
   display: none;
 }

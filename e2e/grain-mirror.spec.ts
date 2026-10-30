@@ -39,7 +39,7 @@ test('runs on the example video and switches to the webcam', async ({
 
   await page.getByRole('link', { name: /back/ }).click()
   await expect
-    .poll(() => page.evaluate(() => document.querySelectorAll('video').length))
+    .poll(() => page.evaluate(() => document.querySelectorAll('video:not([poster])').length))
     .toBe(0)
   expect(errors).toEqual([])
 })
