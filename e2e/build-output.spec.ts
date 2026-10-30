@@ -6,8 +6,6 @@ const experiments = [
   'animated-gradient',
   'animated-texture',
   'planes',
-  'react-three-fiber',
-  'reveal',
 ]
 
 test('prerenders every route', () => {
