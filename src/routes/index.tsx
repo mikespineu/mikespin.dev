@@ -62,27 +62,36 @@ function Home() {
                 aka Mikespin
               </p>
               <p className="font-body max-w-[440px] text-[clamp(16px,1.25vw,18px)] leading-[1.6]">
-                My portfolio is being rebuilt. In the meantime, here is my CV.
+                My portfolio is being rebuilt. In the meantime, <br/> here is my CV.
               </p>
-              <a
-                href="/cv.pdf"
-                download
-                className={`hover-sweep group font-title flex h-12 items-center gap-3 bg-black px-[22px] text-white hover:text-black focus-visible:text-black ${focusClassName}`}
-              >
-                Download CV
-                <svg
-                  aria-hidden="true"
-                  className="transition-transform duration-300 group-hover:translate-y-0.5"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
+              <div className="flex items-center gap-3">
+                <a
+                  href="/cv.pdf"
+                  download
+                  className={`hover-sweep group font-title flex h-12 items-center gap-3 bg-black px-[22px] text-white hover:text-black focus-visible:text-black ${focusClassName}`}
                 >
-                  <path d="M8 1v10M3.5 6.5 8 11l4.5-4.5M1 14.5h14" />
-                </svg>
-              </a>
+                  Download CV
+                  <svg
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:translate-y-0.5"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path d="M8 1v10M3.5 6.5 8 11l4.5-4.5M1 14.5h14" />
+                  </svg>
+                </a>
+                <a
+                  className={`hover-sweep font-title flex size-12 items-center justify-center bg-black text-white hover:text-black focus-visible:text-black ${focusClassName}`}
+                  href="mailto:michalkrecisz@yahoo.com"
+                  aria-label="Email"
+                >
+                  @
+                </a>
+              </div>
             </div>
             <div
               ref={anchorRef}
@@ -93,21 +102,25 @@ function Home() {
             />
           </main>
 
-          <footer className="flex flex-wrap items-end justify-between gap-4">
-            <nav className="flex flex-col items-start gap-1">
-              {experiments.map(({ to, label }) => (
-                <Link key={to} to={to} className={linkClassName}>
-                  {label}
-                </Link>
-              ))}
-            </nav>
-            <a
-              className={linkClassName}
-              href="mailto:michalkrecisz@yahoo.com"
-              aria-label="Email"
-            >
-              @
-            </a>
+          <footer>
+            <div className="flex flex-col items-start gap-2">
+              <h2
+                id="lab-heading"
+                className="font-title text-[13px] font-medium tracking-[0.08em] uppercase"
+              >
+                Lab / WebGL experiments
+              </h2>
+              <nav
+                aria-labelledby="lab-heading"
+                className="flex flex-col items-start gap-1"
+              >
+                {experiments.map(({ to, label }) => (
+                  <Link key={to} to={to} className={linkClassName}>
+                    {label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
           </footer>
         </div>
       </div>
