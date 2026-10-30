@@ -22,6 +22,21 @@ const linkClassName =
 const focusClassName =
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#141414]'
 
+const iconButtonClassName = `hover-sweep font-title flex size-12 items-center justify-center bg-neutral-950/90 text-white/80 hover:text-neutral-950 focus-visible:text-neutral-950 ${focusClassName}`
+
+const profiles = [
+  {
+    href: 'https://github.com/mikespineu',
+    label: 'GitHub',
+    icon: 'M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.3 2.8.1 3.2.8.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3',
+  },
+  {
+    href: 'https://linkedin.com/in/michal-krecisz',
+    label: 'LinkedIn',
+    icon: 'M20.4 20.5h-3.5v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.2 2.4 4.2 5.5zM5.3 7.4a2 2 0 1 1 0-4.1 2 2 0 0 1 0 4.1M7.1 20.5H3.6V9h3.5zM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.8 1.7h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0',
+  },
+]
+
 function Home() {
   const anchorRef = useRef<HTMLDivElement>(null)
 
@@ -64,11 +79,11 @@ function Home() {
               <p className="font-body max-w-[440px] text-[clamp(16px,1.25vw,18px)] leading-[1.6]">
                 My portfolio is being rebuilt. In the meantime, <br/> here is my CV.
               </p>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <a
                   href="/cv.pdf"
                   download
-                  className={`hover-sweep group font-title flex h-12 items-center gap-3 bg-black px-[22px] text-white hover:text-black focus-visible:text-black ${focusClassName}`}
+                  className={`hover-sweep hover-sweep-ink group font-title flex h-12 items-center gap-3 bg-white px-[22px] text-black hover:text-white focus-visible:text-white ${focusClassName}`}
                 >
                   Download CV
                   <svg
@@ -85,12 +100,32 @@ function Home() {
                   </svg>
                 </a>
                 <a
-                  className={`hover-sweep font-title flex size-12 items-center justify-center bg-black text-white hover:text-black focus-visible:text-black ${focusClassName}`}
+                  className={iconButtonClassName}
                   href="mailto:michalkrecisz@yahoo.com"
                   aria-label="Email"
                 >
                   @
                 </a>
+                {profiles.map(({ href, label, icon }) => (
+                  <a
+                    key={href}
+                    className={iconButtonClassName}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={label}
+                  >
+                    <svg
+                      aria-hidden="true"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d={icon} />
+                    </svg>
+                  </a>
+                ))}
               </div>
             </div>
             <div
