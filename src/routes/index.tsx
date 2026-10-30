@@ -2,9 +2,26 @@ import { useRef } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { MsLogoRefraction } from '@/components/MsLogoRefraction'
 
+const siteUrl = 'https://mikespin.dev'
+const siteTitle = 'Michał Kręcisz — Product Engineer / Software Engineer'
+const siteDescription =
+  'Michał Kręcisz, aka Mikespin, is a product and software engineer. Portfolio in progress: download the CV or explore the WebGL lab.'
+
 export const Route = createFileRoute('/')({
   head: () => ({
-    meta: [{ title: 'Michał Kręcisz — Product Engineer / Software Engineer' }],
+    meta: [
+      { title: siteTitle },
+      { name: 'description', content: siteDescription },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: siteTitle },
+      { property: 'og:description', content: siteDescription },
+      { property: 'og:url', content: siteUrl },
+      { property: 'og:image', content: `${siteUrl}/og-image.png` },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+    ],
+    links: [{ rel: 'canonical', href: siteUrl }],
   }),
   component: Home,
 })
@@ -133,7 +150,7 @@ function Home() {
               data-logo-anchor
               role="img"
               aria-label="Mikespin logo"
-              className="aspect-square w-[clamp(152px,24vw,360px)] mr-[clamp(0px,2.8vw,40px)]"
+              className="aspect-square w-[clamp(152px,24vw,360px)] xl:w-[clamp(228px,36vw,540px)] mr-[clamp(0px,2.8vw,40px)]"
             />
           </main>
 
@@ -147,7 +164,7 @@ function Home() {
               </h2>
               <nav
                 aria-labelledby="lab-heading"
-                className="flex flex-col items-start gap-1"
+                className="flex flex-wrap gap-1 md:flex-col md:items-start"
               >
                 {experiments.map(({ to, label }) => (
                   <Link key={to} to={to} className={linkClassName}>

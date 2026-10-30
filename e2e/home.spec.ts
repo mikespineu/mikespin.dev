@@ -55,4 +55,13 @@ test('home offers the CV as a download', async ({ page, request }) => {
   const response = await request.get('/cv.pdf')
   expect(response.status()).toBe(200)
   await expect(page).toHaveTitle('Michał Kręcisz — Product Engineer / Software Engineer')
+  await expect(page.locator('meta[name="description"]')).toHaveCount(1)
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    'content',
+    'https://mikespin.dev',
+  )
+  const image = await page
+    .locator('meta[property="og:image"]')
+    .getAttribute('content')
+  expect((await request.get(new URL(image!).pathname)).status()).toBe(200)
 })

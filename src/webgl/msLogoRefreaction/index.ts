@@ -19,6 +19,10 @@ const pallet = ['#490a3d', '#bd1550', '#e97f02', '#f8ca00', '#8a9b0f']
 
 const palette = pallet.map((color) => new Color(color as ColorRepresentation))
 
+// Degrees of device tilt for the full effect, and that effect's size.
+const MAX_TILT = 30
+const TILT_STRENGTH = 0.25
+
 // Pulls the camera back on narrow screens so the logo keeps a side margin.
 function getCameraZ(aspect: number) {
   return Math.max(2.3, 0.2 + 1.24 / aspect)
@@ -59,11 +63,7 @@ export async function setup({ canvas, anchor }: SetupPayload) {
     renderer.setSize(getDocumentWidth(), getDocumentHeight())
   }
 
-  function setupRotation({ clientX, clientY }: MouseEvent) {
-    const documentWidth = getDocumentWidth()
-    const documentHeight = getDocumentHeight()
-    const deltaX = (clientX - documentWidth / 2) / documentWidth
-    const deltaY = (clientY - documentHeight / 2) / documentHeight
+  function rotateLogo(deltaX: number, deltaY: number) {
     const factor = 0.3
 
     gsap.to(scene.getLogo().rotation, {
@@ -71,7 +71,51 @@ export async function setup({ canvas, anchor }: SetupPayload) {
       z: -deltaX * factor,
       duration: 3.5,
       ease: 'power2.out',
+      overwrite: true,
     })
+  }
+
+  // Measured from the logo, not the viewport, so it rests with the cursor on it.
+  function setupRotation({ clientX, clientY }: MouseEvent) {
+    const { left, top, width, height } = anchor.getBoundingClientRect()
+    rotateLogo(
+      (clientX - (left + width / 2)) / getDocumentWidth(),
+      (clientY - (top + height / 2)) / getDocumentHeight()
+    )
+  }
+
+  // The first reading is the rest pose, so any holding angle starts level.
+  let restTilt: { beta: number; gamma: number } | null = null
+
+  function onDeviceTilt({ beta, gamma }: DeviceOrientationEvent) {
+    if (beta === null || gamma === null) return
+    restTilt ??= { beta, gamma }
+    rotateLogo(
+      MathUtils.clamp((gamma - restTilt.gamma) / MAX_TILT, -1, 1) * TILT_STRENGTH,
+      MathUtils.clamp((beta - restTilt.beta) / MAX_TILT, -1, 1) * TILT_STRENGTH
+    )
+  }
+
+  if (window.matchMedia('(hover: none)').matches) {
+    const { requestPermission } = DeviceOrientationEvent as unknown as {
+      requestPermission?: () => Promise<PermissionState>
+    }
+    if (requestPermission) {
+      // iOS only grants motion access from inside a user gesture.
+      window.addEventListener(
+        'touchend',
+        () => {
+          requestPermission.call(DeviceOrientationEvent).then((state) => {
+            if (state === 'granted') {
+              window.addEventListener('deviceorientation', onDeviceTilt)
+            }
+          })
+        },
+        { once: true }
+      )
+    } else {
+      window.addEventListener('deviceorientation', onDeviceTilt)
+    }
   }
 
   window.addEventListener('resize', onWindowResize)
