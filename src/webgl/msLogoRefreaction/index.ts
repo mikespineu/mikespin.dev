@@ -15,9 +15,18 @@ type SetupPayload = {
   anchor: HTMLElement
 }
 
-const pallet = ['#490a3d', '#bd1550', '#e97f02', '#f8ca00', '#8a9b0f']
+// Index 3 is the shader's base colour, so it stays light enough for the dark text.
+const pallets = [
+  ['#490a3d', '#bd1550', '#e97f02', '#f8ca00', '#8a9b0f'],
+  ['#0b3c5d', '#328cc1', '#1fb5a8', '#9fe8df', '#f2f7f2'],
+  ['#5b1a6e', '#e0218a', '#ff6f59', '#ffb3c7', '#fff1e6'],
+  ['#1e3d2f', '#3f8f4f', '#a4c639', '#d9f06b', '#f4e04d'],
+  ['#3a1c71', '#6a5acd', '#a98bff', '#d7c8ff', '#ffd6a5'],
+]
 
-const palette = pallet.map((color) => new Color(color as ColorRepresentation))
+const palette = pallets[0].map(
+  (color) => new Color(color as ColorRepresentation)
+)
 
 // Degrees of device tilt for the full effect, and that effect's size.
 const MAX_TILT = 30
@@ -136,7 +145,30 @@ export async function setup({ canvas, anchor }: SetupPayload) {
       .set(scene.logoRig.rotation, { y: 0 })
   }
 
+  let palletIndex = 0
+
+  // Colours change in place, as the shader's uniform holds these same objects.
+  function nextPalette() {
+    palletIndex = (palletIndex + 1) % pallets.length
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
+
+    palette.forEach((color, index) => {
+      const { r, g, b } = new Color(pallets[palletIndex][index])
+      gsap.to(color, {
+        r,
+        g,
+        b,
+        duration: reduceMotion ? 0 : 1.2,
+        ease: 'power2.inOut',
+        overwrite: true,
+      })
+    })
+  }
+
   anchor.addEventListener('click', jumpAndSpin)
+  anchor.addEventListener('click', nextPalette)
 
   function scaleLogo(scale: number, ease: string) {
     if (!window.matchMedia('(hover: hover)').matches) return

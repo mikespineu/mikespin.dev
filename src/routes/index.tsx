@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { MsLogoRefraction } from '@/components/MsLogoRefraction'
 
@@ -40,7 +40,7 @@ const linkClassName =
 const focusClassName =
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#141414]'
 
-const iconButtonClassName = `hover-sweep font-title flex size-12 items-center justify-center bg-neutral-950/90 text-white/80 hover:text-neutral-950 focus-visible:text-neutral-950 ${focusClassName}`
+const iconButtonClassName = `hover-sweep font-title flex items-center justify-center bg-neutral-950/90 text-white/80 hover:text-neutral-950 focus-visible:text-neutral-950 ${focusClassName}`
 
 const profiles = [
   {
@@ -55,8 +55,110 @@ const profiles = [
   },
 ]
 
+const projects = [
+  {
+    name: 'keepAwake',
+    href: 'https://github.com/mikespineu/keepAwake',
+    description:
+      'macOS menu bar app that keeps your Mac awake, with a timer and a low-battery cutoff.',
+    stack: 'Swift',
+    video: { src: '/video/keep-awake.mp4', poster: '/video/keep-awake.jpg' },
+  },
+  {
+    name: 'poster-wall-controls',
+    href: 'https://github.com/mikespineu/poster-wall-controls',
+    description:
+      'Custom React Three Fiber controls for a 3D poster wall: pan, zoom, focus and rotate.',
+    stack: 'TypeScript',
+    image: '/video/poster-wall-controls.gif',
+  },
+  {
+    name: 'design-system-wireframe',
+    href: 'https://github.com/mikespineu/design-system-wireframe',
+    description:
+      'Minimal React design system on Radix UI, built by a Claude Code agent pipeline.',
+    stack: 'TypeScript',
+  },
+  {
+    name: 'tanstack-start-r3f-template',
+    href: 'https://github.com/mikespineu/tanstack-start-r3f-template',
+    description:
+      'TanStack Start and React Three Fiber starter with SSR, drei and Tailwind 4.',
+    stack: 'TypeScript',
+  },
+]
+
+// Started here because React omits `muted` from server HTML, which blocks autoplay.
+// Waits for the card to appear so the hero doesn't download the video.
+function playMutedWhenVisible(video: HTMLVideoElement) {
+  video.muted = true
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+  const observer = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) video.play().catch(() => {})
+    else video.pause()
+  })
+  observer.observe(video)
+  return () => observer.disconnect()
+}
+
+function ContactLinks({ className }: { className: string }) {
+  return (
+    <>
+      <a
+        className={`${iconButtonClassName} ${className}`}
+        href="mailto:michalkrecisz@yahoo.com"
+        aria-label="Email"
+      >
+        @
+      </a>
+      {profiles.map(({ href, label, icon }) => (
+        <a
+          key={href}
+          className={`${iconButtonClassName} ${className}`}
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={label}
+        >
+          <svg
+            aria-hidden="true"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d={icon} />
+          </svg>
+        </a>
+      ))}
+    </>
+  )
+}
+
 function Home() {
   const anchorRef = useRef<HTMLDivElement>(null)
+  const heroRef = useRef<HTMLDivElement>(null)
+
+  // A hero taller than the viewport must scroll to its end before it pins.
+  useEffect(() => {
+    const hero = heroRef.current
+    if (!hero) return
+
+    function updateStickyOffset() {
+      if (!hero) return
+      const overflow = hero.offsetHeight - window.innerHeight
+      hero.style.top = `${Math.min(0, -overflow)}px`
+    }
+
+    const observer = new ResizeObserver(updateStickyOffset)
+    observer.observe(hero)
+    window.addEventListener('resize', updateStickyOffset)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', updateStickyOffset)
+    }
+  }, [])
 
   return (
     <>
@@ -66,8 +168,15 @@ function Home() {
         anchorRef={anchorRef}
       />
       {/* The body never scrolls, so short viewports scroll this layer instead. */}
-      <div className="fixed inset-0 overflow-y-auto">
-        <div className="flex min-h-svh flex-col px-[clamp(24px,6.6vw,96px)] py-[clamp(24px,3vw,40px)] text-[#141414]">
+      <div className="fixed inset-0 snap-y snap-proximity overflow-y-auto">
+        {/* Ends above the strip, so the pinned hero can't show through it. */}
+        <div className="relative">
+        {/* The marker carries the snap point, as a pinned hero would match at every offset. */}
+        <div aria-hidden="true" className="absolute top-0 h-px w-px snap-start" />
+        <div
+          ref={heroRef}
+          className="sticky top-0 flex min-h-svh flex-col px-[clamp(24px,6.6vw,96px)] py-[clamp(24px,3vw,40px)] text-[#141414]"
+        >
           <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
             <Link
               to="/"
@@ -120,33 +229,7 @@ function Home() {
                     <path d="M8 1v10M3.5 6.5 8 11l4.5-4.5M1 14.5h14" />
                   </svg>
                 </a>
-                <a
-                  className={iconButtonClassName}
-                  href="mailto:michalkrecisz@yahoo.com"
-                  aria-label="Email"
-                >
-                  @
-                </a>
-                {profiles.map(({ href, label, icon }) => (
-                  <a
-                    key={href}
-                    className={iconButtonClassName}
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={label}
-                  >
-                    <svg
-                      aria-hidden="true"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d={icon} />
-                    </svg>
-                  </a>
-                ))}
+                <ContactLinks className="size-12" />
               </div>
             </div>
             <div
@@ -178,6 +261,77 @@ function Home() {
               </nav>
             </div>
           </footer>
+        </div>
+
+        <section className="relative flex snap-start min-h-[calc(100vh-120px)] flex-col lg:min-h-[calc(100vh-180px)] justify-center gap-[clamp(32px,4vw,56px)] bg-white py-[clamp(48px,6vw,80px)] text-[#141414]">
+          <h2 className="font-title px-[clamp(24px,6.6vw,96px)] text-[clamp(40px,5vw,72px)] leading-[.95] font-medium tracking-[-0.05em]">
+            Built in the Open
+          </h2>
+          <ul className="no-scrollbar flex snap-x snap-mandatory scroll-px-[clamp(24px,6.6vw,96px)] gap-4 overflow-x-auto px-[clamp(24px,6.6vw,96px)] lg:grid lg:grid-cols-4 lg:overflow-visible">
+            {projects.map(({ name, href, description, stack, video, image }) => (
+              <li
+                key={name}
+                className="w-[78%] shrink-0 snap-start sm:w-[42%] lg:w-auto"
+              >
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`group flex flex-col gap-3 ${focusClassName}`}
+                >
+                  <div className="aspect-[4/5] overflow-hidden bg-neutral-950">
+                    {video ? (
+                      <video
+                        ref={playMutedWhenVisible}
+                        aria-hidden="true"
+                        className="size-full object-cover"
+                        poster={video.poster}
+                        src={video.src}
+                        preload="none"
+                        loop
+                        muted
+                        playsInline
+                      />
+                    ) : image ? (
+                      <img
+                        alt=""
+                        className="size-full object-cover"
+                        loading="lazy"
+                        src={image}
+                      />
+                    ) : (
+                      <div className="font-title flex size-full items-end p-4 text-[clamp(20px,2vw,28px)] leading-[1.05] font-medium tracking-[-0.03em] break-words text-white/80">
+                        {name}
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="font-title text-[15px] font-medium break-words group-hover:underline">
+                    {name}
+                  </h3>
+                  <p className="font-body text-[15px] leading-[1.5]">
+                    {description}
+                  </p>
+                  <p className="font-title text-[13px] tracking-[0.08em] uppercase">
+                    {stack}
+                  </p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+        </div>
+
+        {/* Transparent, so the WebGL gradient behind the page shows through. */}
+        <div className="flex h-[120px] snap-end items-center justify-between lg:h-[180px] px-[clamp(24px,6.6vw,96px)] text-[#141414]">
+          <Link
+            to="/"
+            className={`hover-underline font-title text-[13px] font-medium ${focusClassName}`}
+          >
+            mikespin.dev
+          </Link>
+          <div className="flex items-center gap-1">
+            <ContactLinks className="size-12" />
+          </div>
         </div>
       </div>
     </>

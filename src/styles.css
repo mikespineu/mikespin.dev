@@ -99,6 +99,10 @@ html {
   }
 }
 
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
 .dos-cursor {
   animation: dos-cursor-blink 1.06s steps(1) infinite;
 }
