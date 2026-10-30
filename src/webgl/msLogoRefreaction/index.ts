@@ -1,13 +1,13 @@
 import {
   Color,
-  ColorRepresentation,
+  type ColorRepresentation,
   PerspectiveCamera,
   WebGLRenderer,
 } from 'three'
 import { gsap } from 'gsap'
 import niceColors from 'nice-color-palettes'
 
-import { getDocumentHeight, getDocumentWidth } from '@/utils/utils.client'
+import { getDocumentHeight, getDocumentWidth } from '@/utils/viewport'
 
 import SceneManager from './SceneManager'
 type SetupPayload = {
