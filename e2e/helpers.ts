@@ -18,20 +18,22 @@ export async function expectCanvasRenders(page: Page, path: string) {
 
   await page.goto(path)
 
+  await page.waitForTimeout(3000)
+
+  // Report real page errors first; they are the usual cause of a blank canvas.
+  expect(pageErrors).toEqual([])
+  expect(failedResponses).toEqual([])
+
   const canvas = page.locator('canvas').filter({ visible: true }).first()
   await expect(canvas).toBeVisible()
-  await page.waitForTimeout(3000)
   await canvas.scrollIntoViewIfNeeded()
 
   const box = await canvas.boundingBox()
   expect(box?.width).toBeGreaterThan(0)
   expect(box?.height).toBeGreaterThan(0)
 
-  const screenshot = await page.screenshot({ clip: box ?? undefined })
+  const screenshot = await canvas.screenshot()
   expect(await countColors(page, screenshot)).toBeGreaterThan(1)
-
-  expect(pageErrors).toEqual([])
-  expect(failedResponses).toEqual([])
 }
 
 // Checks every pixel, so a small mark on a flat background still counts.
