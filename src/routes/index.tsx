@@ -75,8 +75,11 @@ function Home() {
               mikespin.dev
             </Link>
             <p className="font-title flex items-center gap-2 text-[13px] font-medium tracking-[0.08em]">
-              <span aria-hidden="true" className="size-2 bg-[#141414]" />
               UNDER CONSTRUCTION
+              <span
+                aria-hidden="true"
+                className="dos-cursor h-[1.1em] w-[0.65em] bg-[#141414]"
+              />
             </p>
           </header>
 
@@ -150,7 +153,7 @@ function Home() {
               data-logo-anchor
               role="img"
               aria-label="Mikespin logo"
-              className="aspect-square w-[clamp(152px,24vw,360px)] xl:w-[clamp(228px,36vw,540px)] mr-[clamp(0px,2.8vw,40px)]"
+              className="aspect-square cursor-pointer w-[clamp(152px,24vw,360px)] xl:w-[clamp(228px,36vw,540px)] mr-[clamp(0px,2.8vw,40px)]"
             />
           </main>
 

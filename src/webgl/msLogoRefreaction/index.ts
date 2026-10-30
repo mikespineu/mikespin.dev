@@ -118,6 +118,44 @@ export async function setup({ canvas, anchor }: SetupPayload) {
     }
   }
 
+  let jump: gsap.core.Timeline | null = null
+
+  function jumpAndSpin() {
+    if (jump?.isActive()) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    jump = gsap
+      .timeline()
+      .to(scene.logoJump, { lift: 0.3, duration: 0.45, ease: 'power3.out' })
+      .to(scene.logoJump, { lift: 0, duration: 0.85, ease: 'bounce.out' })
+      .to(
+        scene.logoRig.rotation,
+        { y: Math.PI * 4, duration: 1.2, ease: 'power2.inOut' },
+        0
+      )
+      .set(scene.logoRig.rotation, { y: 0 })
+  }
+
+  anchor.addEventListener('click', jumpAndSpin)
+
+  function scaleLogo(scale: number, ease: string) {
+    if (!window.matchMedia('(hover: hover)').matches) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    gsap.to(scene.logoRig.scale, {
+      x: scale,
+      y: scale,
+      z: scale,
+      duration: 0.5,
+      ease,
+      overwrite: true,
+    })
+  }
+
+  // A springy swell hints that the logo reacts to a click.
+  anchor.addEventListener('mouseenter', () => scaleLogo(1.08, 'back.out(3)'))
+  anchor.addEventListener('mouseleave', () => scaleLogo(1, 'power2.out'))
+
   window.addEventListener('resize', onWindowResize)
 
   // Read every frame so the logo follows resizes, scrolling and late font swaps.

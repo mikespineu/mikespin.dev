@@ -4,6 +4,7 @@ import {
   DoubleSide,
   EquirectangularReflectionMapping,
   HalfFloatType,
+  Group,
   Mesh,
   MeshBasicMaterial,
   PlaneGeometry,
@@ -35,6 +36,9 @@ export default class SceneManager extends Scene {
   private plane = {} as Mesh
   private logoObject = {} as Mesh
   private logoExtent = 1
+  // Carries placement and the jump, leaving the mesh rotation to the tilt.
+  readonly logoRig = new Group()
+  readonly logoJump = { lift: 0 }
   private readonly sceneTarget = new WebGLRenderTarget(1, 1, {
     type: HalfFloatType,
   })
@@ -94,7 +98,7 @@ export default class SceneManager extends Scene {
   // Centres the logo on a world point and fits its longer side to `size`.
   fitLogo(x: number, y: number, size: number) {
     if (!this.logoObject.isMesh) return
-    this.logoObject.position.set(x, y, LOGO_DEPTH)
+    this.logoRig.position.set(x, y + this.logoJump.lift * size, LOGO_DEPTH)
     this.logoObject.scale.setScalar(size / this.logoExtent)
   }
 
@@ -152,14 +156,15 @@ export default class SceneManager extends Scene {
 
       const mesh = new Mesh(geometry, material)
       const scale = 8
-      mesh.position.set(0, 0, LOGO_DEPTH)
       mesh.scale.set(scale, scale, scale)
       mesh.rotation.set(Math.PI / 2, 0, 0)
       mesh.name = 'logo'
       mesh.castShadow = true
       mesh.receiveShadow = true
 
-      this.add(mesh)
+      this.logoRig.position.z = LOGO_DEPTH
+      this.logoRig.add(mesh)
+      this.add(this.logoRig)
       this.logoObject = mesh
     })
   }
