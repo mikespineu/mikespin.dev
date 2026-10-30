@@ -1,4 +1,5 @@
-import { FC, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
+import type { FC } from 'react'
 import { setup as setupAnimatedTexture } from '../webgl/animatedTexture'
 
 export const AnimatedTexture: FC = () => {

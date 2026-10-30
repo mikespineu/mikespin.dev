@@ -1,8 +1,8 @@
 import { Color, PerspectiveCamera, WebGLRenderer } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import niceColors from 'nice-color-palettes'
 
-import { getDocumentHeight, getDocumentWidth } from '@/utils/utils.client'
+import { getDocumentHeight, getDocumentWidth } from '@/utils/viewport'
 
 import SceneManager from './SceneManager'
 
