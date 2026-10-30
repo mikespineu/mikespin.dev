@@ -7,6 +7,7 @@ const experiments = [
   { to: '/exp/animated-gradient', label: 'Animated gradient' },
   { to: '/exp/animated-texture', label: 'Animated texture' },
   { to: '/exp/planes', label: 'Planes' },
+  { to: '/exp/reaction-diffusion', label: 'Reaction–diffusion' },
 ] as const
 
 function Home() {

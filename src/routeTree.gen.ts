@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExpAnimatedGradientRouteImport } from './routes/exp/animated-gradient'
 import { Route as ExpAnimatedTextureRouteImport } from './routes/exp/animated-texture'
 import { Route as ExpPlanesRouteImport } from './routes/exp/planes'
+import { Route as ExpReactionDiffusionRouteImport } from './routes/exp/reaction-diffusion'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +35,25 @@ const ExpPlanesRoute = ExpPlanesRouteImport.update({
   path: '/exp/planes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExpReactionDiffusionRoute = ExpReactionDiffusionRouteImport.update({
+  id: '/exp/reaction-diffusion',
+  path: '/exp/reaction-diffusion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/exp/animated-gradient': typeof ExpAnimatedGradientRoute
   '/exp/animated-texture': typeof ExpAnimatedTextureRoute
   '/exp/planes': typeof ExpPlanesRoute
+  '/exp/reaction-diffusion': typeof ExpReactionDiffusionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/exp/animated-gradient': typeof ExpAnimatedGradientRoute
   '/exp/animated-texture': typeof ExpAnimatedTextureRoute
   '/exp/planes': typeof ExpPlanesRoute
+  '/exp/reaction-diffusion': typeof ExpReactionDiffusionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,19 +61,30 @@ export interface FileRoutesById {
   '/exp/animated-gradient': typeof ExpAnimatedGradientRoute
   '/exp/animated-texture': typeof ExpAnimatedTextureRoute
   '/exp/planes': typeof ExpPlanesRoute
+  '/exp/reaction-diffusion': typeof ExpReactionDiffusionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/exp/animated-gradient' | '/exp/animated-texture' | '/exp/planes'
+    | '/'
+    | '/exp/animated-gradient'
+    | '/exp/animated-texture'
+    | '/exp/planes'
+    | '/exp/reaction-diffusion'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/exp/animated-gradient' | '/exp/animated-texture' | '/exp/planes'
+  to:
+    | '/'
+    | '/exp/animated-gradient'
+    | '/exp/animated-texture'
+    | '/exp/planes'
+    | '/exp/reaction-diffusion'
   id:
     | '__root__'
     | '/'
     | '/exp/animated-gradient'
     | '/exp/animated-texture'
     | '/exp/planes'
+    | '/exp/reaction-diffusion'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -73,6 +92,7 @@ export interface RootRouteChildren {
   ExpAnimatedGradientRoute: typeof ExpAnimatedGradientRoute
   ExpAnimatedTextureRoute: typeof ExpAnimatedTextureRoute
   ExpPlanesRoute: typeof ExpPlanesRoute
+  ExpReactionDiffusionRoute: typeof ExpReactionDiffusionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -105,6 +125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExpPlanesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exp/reaction-diffusion': {
+      id: '/exp/reaction-diffusion'
+      path: '/exp/reaction-diffusion'
+      fullPath: '/exp/reaction-diffusion'
+      preLoaderRoute: typeof ExpReactionDiffusionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -113,6 +140,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExpAnimatedGradientRoute: ExpAnimatedGradientRoute,
   ExpAnimatedTextureRoute: ExpAnimatedTextureRoute,
   ExpPlanesRoute: ExpPlanesRoute,
+  ExpReactionDiffusionRoute: ExpReactionDiffusionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

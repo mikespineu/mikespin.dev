@@ -22,6 +22,7 @@ npm run test:e2e   # build + Playwright e2e
 - `/exp/animated-gradient`
 - `/exp/animated-texture`
 - `/exp/planes`
+- `/exp/reaction-diffusion` – WebGPU/TSL reaction-diffusion portrait driven by a video or the webcam (Leva controls)
 
 All routes are prerendered at build time.
 
