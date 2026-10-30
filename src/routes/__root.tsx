@@ -57,6 +57,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="overflow-y-hidden">
         {children}
+        <div aria-hidden="true" className="page-wipe" />
         <TanStackDevtools
           config={{
             position: 'bottom-right',

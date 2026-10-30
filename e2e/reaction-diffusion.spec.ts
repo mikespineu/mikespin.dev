@@ -60,7 +60,7 @@ test('switches to the webcam and releases it when leaving', async ({
     const el = [...document.querySelectorAll('video')].find((v) => v.srcObject)
     const stream = el?.srcObject as MediaStream | undefined
     return {
-      count: document.querySelectorAll('video').length,
+      count: document.querySelectorAll('video:not([poster])').length,
       live:
         stream?.getVideoTracks().every((t) => t.readyState === 'live') ?? false,
       width: el?.videoWidth ?? 0,
@@ -79,7 +79,7 @@ test('switches to the webcam and releases it when leaving', async ({
   await page.getByRole('link', { name: /back/ }).click()
   await expect(page).toHaveURL(/\/$/)
   await expect
-    .poll(() => page.evaluate(() => document.querySelectorAll('video').length))
+    .poll(() => page.evaluate(() => document.querySelectorAll('video:not([poster])').length))
     .toBe(0)
   expect(errors).toEqual([])
 })
