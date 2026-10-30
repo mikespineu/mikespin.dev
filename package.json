@@ -1,49 +1,61 @@
 {
   "name": "mikespin.dev",
-  "version": "0.1.0",
   "private": true,
+  "type": "module",
   "engines": {
-    "node": "18.x"
+    "node": "26.x"
+  },
+  "imports": {
+    "#/*": "./src/*"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "vite dev --port 3000",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-three/drei": "^9.70.43",
-    "@react-three/fiber": "^8.12.1",
-    "@react-three/postprocessing": "^2.11.0",
-    "@types/three": "^0.150.1",
-    "glslify-loader": "^2.0.0",
-    "gsap": "^3.11.3",
-    "maath": "^0.5.3",
-    "next": "^14.2.4",
-    "nice-color-palettes": "^2.0.0",
-    "postprocessing": "^6.31.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "three": "^0.165.0",
-    "usehooks-ts": "^2.9.1",
-    "zustand": "^4.3.9"
+    "@react-three/drei": "10.7.8",
+    "@react-three/fiber": "9.7.0",
+    "@react-three/postprocessing": "3.2.2",
+    "@tailwindcss/vite": "4.3.3",
+    "@tanstack/react-devtools": "0.10.13",
+    "@tanstack/react-router": "1.170.44",
+    "@tanstack/react-router-devtools": "1.167.2",
+    "@tanstack/react-router-ssr-query": "1.167.3",
+    "@tanstack/react-start": "1.169.1",
+    "@tanstack/router-plugin": "1.168.45",
+    "gsap": "3.15.0",
+    "leva": "0.10.1",
+    "maath": "0.10.8",
+    "nice-color-palettes": "4.0.0",
+    "postprocessing": "6.39.5",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "tailwindcss": "4.3.3",
+    "three": "0.185.1",
+    "usehooks-ts": "3.1.1",
+    "zustand": "5.0.16"
   },
   "devDependencies": {
-    "@react-three/eslint-plugin": "^0.1.1",
-    "@types/node": "18.7.21",
-    "@types/react": "18.0.21",
-    "@types/react-dom": "18.0.6",
-    "@typescript-eslint/eslint-plugin": "^5.47.0",
-    "autoprefixer": "^10.4.12",
-    "eslint": "8.24.0",
-    "eslint-config-next": "^14.2.4",
-    "eslint-config-prettier": "^8.5.0",
-    "leva": "^0.9.34",
-    "next-transpile-modules": "^10.0.0",
-    "postcss": "^8.4.16",
-    "prettier": "^2.8.1",
-    "raw-loader": "^4.0.2",
-    "tailwindcss": "^3.1.8",
-    "typescript": "4.8.3"
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/typography": "^0.5.4",
+    "@tanstack/devtools-vite": "0.8.5",
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/react": "16.3.2",
+    "@types/node": "26.3.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "@types/three": "0.185.4",
+    "@vitejs/plugin-react": "6.1.0",
+    "jsdom": "30.0.1",
+    "serve": "14.2.6",
+    "typescript": "7.0.2",
+    "vite": "8.2.2",
+    "vitest": "4.1.11"
+  },
+  "allowScripts": {
+    "fsevents@2.3.3": true
   }
 }
