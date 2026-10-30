@@ -11,8 +11,6 @@ const paths = [
   '/exp/animated-gradient',
   '/exp/animated-texture',
   '/exp/planes',
-  '/exp/react-three-fiber',
-  '/exp/reveal',
 ]
 
 const config = defineConfig({

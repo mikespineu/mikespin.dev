@@ -22,8 +22,6 @@ npm run test:e2e   # build + Playwright e2e
 - `/exp/animated-gradient`
 - `/exp/animated-texture`
 - `/exp/planes`
-- `/exp/react-three-fiber`
-- `/exp/reveal`
 
 All routes are prerendered at build time.
 

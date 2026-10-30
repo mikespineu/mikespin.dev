@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { AnimatedTexture } from '@/components/AnimatedTexture'
+import { BackLink } from '@/components/BackLink'
 
 export const Route = createFileRoute('/exp/animated-texture')({
   head: () => ({ meta: [{ title: 'WEBgL animated Textures' }] }),
@@ -9,6 +10,7 @@ export const Route = createFileRoute('/exp/animated-texture')({
 function AnimatedTexturesPage() {
   return (
     <div className="m-0 p-0 bg-neutral-900 w-full flex justify-center items-center">
+      <BackLink />
       <main>
         <AnimatedTexture />
       </main>
