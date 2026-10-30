@@ -1,4 +1,5 @@
-import {FC, useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
+import type { FC } from "react";
 import { setup as setupAnimatedGradients, changeGradient } from "../webgl/animatedGradients";
 
 export const AnimatedGradients: FC = () => {
