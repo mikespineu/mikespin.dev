@@ -3,22 +3,15 @@ import {
   Mesh,
   Scene,
   ShaderMaterial,
-  Vector2,
-  SphereGeometry,
-  PlaneGeometry,
-  MeshBasicMaterial,
-  TorusGeometry,
-  Texture,
   TextureLoader,
-  RepeatWrapping,
   NearestFilter,
   DoubleSide,
   Clock,
   TorusKnotGeometry
 } from 'three'
 
-import fragmentShader from './fragmentShader.glsl'
-import vertexShader from './vertexShader.glsl'
+import fragmentShader from './fragmentShader.glsl?raw'
+import vertexShader from './vertexShader.glsl?raw'
 
 export default class SceneManager extends Scene {
   private plane = {} as Mesh
