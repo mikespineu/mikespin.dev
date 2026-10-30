@@ -12,15 +12,15 @@ import {
   Vector2,
 } from 'three'
 
-import fragmentShader from './fragmentShader.glsl'
-import vertexShader from './vertexShader.glsl'
+import fragmentShader from './fragmentShader.glsl?raw'
+import vertexShader from './vertexShader.glsl?raw'
 
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
 
 export default class SceneManager extends Scene {
   private readonly gltfLoader = new GLTFLoader()
-  private readonly RGBELoader = new RGBELoader()
+  private readonly hdrLoader = new HDRLoader()
   private readonly TextureLoader = new TextureLoader()
   private plane = {} as Mesh
   private logoObject = {} as Mesh
@@ -62,14 +62,14 @@ export default class SceneManager extends Scene {
   }
 
   async createLogo() {
-    const hdrEquirect = this.RGBELoader.load(
-      'empty_warehouse_01_1k.hdr',
+    const hdrEquirect = this.hdrLoader.load(
+      '/empty_warehouse_01_1k.hdr',
       () => {
         hdrEquirect.mapping = EquirectangularReflectionMapping
       }
     )
 
-    const normalMapTexture = this.TextureLoader.load('normals.jpg')
+    const normalMapTexture = this.TextureLoader.load('/normals.jpg')
     normalMapTexture.wrapS = RepeatWrapping
     normalMapTexture.wrapT = RepeatWrapping
 
