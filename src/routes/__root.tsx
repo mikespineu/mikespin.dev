@@ -5,6 +5,8 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import appCss from '../styles.css?url'
 
+const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
+
 export const Route = createRootRoute({
   head: () => ({
     meta: [
@@ -45,6 +47,20 @@ export const Route = createRootRoute({
         href: appCss,
       },
     ],
+    scripts: GA_MEASUREMENT_ID
+      ? [
+          {
+            src: `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`,
+            async: true,
+          },
+          {
+            children: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_MEASUREMENT_ID}');`,
+          },
+        ]
+      : [],
   }),
   shellComponent: RootDocument,
 })
